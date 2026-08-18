@@ -91,6 +91,9 @@ class EditProduct extends EditRecord
     }
 
     private ?int $previousStock = null;
+    public ?string $newStockMfgDate = null;
+    public ?string $newStockExpiryDate = null;
+    public bool $hasNewStockDates = false;
 
     protected function beforeSave(): void
     {
@@ -115,10 +118,25 @@ class EditProduct extends EditRecord
                 });
             }
         }
+
+        if ($this->hasNewStockDates) {
+            $batch = $this->record->activeStockBatches()->first();
+            if ($batch) {
+                $batch->mfg_date = $this->newStockMfgDate;
+                $batch->expiry_date = $this->newStockExpiryDate;
+                $batch->save();
+            }
+        }
     }
 
     protected function mutateFormDataBeforeSave(array $data): array
     {
+        if (array_key_exists('new_stock_mfg_date', $data) || array_key_exists('new_stock_expiry_date', $data)) {
+            $this->hasNewStockDates = true;
+            $this->newStockMfgDate = $data['new_stock_mfg_date'] ?? null;
+            $this->newStockExpiryDate = $data['new_stock_expiry_date'] ?? null;
+        }
+
         if ($this->isAutoProduct($data)) {
             $data['brand_id'] = $data['brand_id_auto'] ?? $data['brand_id'] ?? $this->record->brand_id;
             $data['category_id'] = $data['category_id_auto'] ?? $data['category_id'] ?? $this->record->category_id;
@@ -143,7 +161,9 @@ class EditProduct extends EditRecord
             $data['autogenerate_barcode'],
             $data['stock_quantity_auto'],
             $data['mfg_date_auto'],
-            $data['expiry_date_auto']
+            $data['expiry_date_auto'],
+            $data['new_stock_mfg_date'],
+            $data['new_stock_expiry_date']
         );
 
         return $data;

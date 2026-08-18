@@ -36,6 +36,17 @@ class AdminPanelProvider extends PanelProvider
             ->brandLogo(fn () => Setting::get('store_logo') ? asset('storage/'.Setting::get('store_logo')) : null)
             ->brandLogoHeight('3rem')
             ->sidebarCollapsibleOnDesktop()
+            ->navigationGroups([
+                \Filament\Navigation\NavigationGroup::make()
+                    ->label('Inventory')
+                    ->icon('heroicon-o-archive-box'),
+                \Filament\Navigation\NavigationGroup::make()
+                    ->label('Store Management')
+                    ->icon('heroicon-o-building-storefront'),
+                \Filament\Navigation\NavigationGroup::make()
+                    ->label('Settings')
+                    ->icon('heroicon-o-cog-6-tooth'),
+            ])
             ->defaultThemeMode(\Filament\Enums\ThemeMode::Dark)
             ->colors([
                 'primary' => Color::Emerald,

@@ -25,6 +25,7 @@ class ProductForm
         return $schema
             ->components([
                 Tabs::make('Product type')
+                    ->hidden(fn (?Product $record) => $record !== null)
                     ->tabs([
                         'pre_printed' => Tabs\Tab::make('pre_printed')
                             ->label('Product with Pre-printed Barcode')
@@ -185,15 +186,123 @@ class ProductForm
                             ])->columns(2),
                     ]),
 
+                Section::make('Edit Product Details')
+                    ->visible(fn (?Product $record) => $record !== null)
+                    ->schema([
+                        Select::make('brand_id')
+                            ->relationship('brand', 'name')
+                            ->searchable()
+                            ->preload()
+                            ->required()
+                            ->createOptionForm([
+                                TextInput::make('name')
+                                    ->required()
+                                    ->live(onBlur: true)
+                                    ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state))),
+                                TextInput::make('slug'),
+                            ]),
+                        Select::make('category_id')
+                            ->label('Main Category')
+                            ->options(\App\Models\Category::whereNull('parent_id')->pluck('name', 'id'))
+                            ->live()
+                            ->afterStateUpdated(fn (Set $set) => $set('subcategory_id', null))
+                            ->searchable()
+                            ->preload(),
+                        Select::make('subcategory_id')
+                            ->label('Sub Category')
+                            ->options(function (Get $get) {
+                                $categoryId = $get('category_id');
+                                if (! $categoryId) {
+                                    return \App\Models\Category::whereNotNull('parent_id')->pluck('name', 'id');
+                                }
+                                return \App\Models\Category::where('parent_id', $categoryId)->pluck('name', 'id');
+                            })
+                            ->searchable()
+                            ->preload(),
+                        TextInput::make('name')
+                            ->required(),
+                        TextInput::make('unit_quantity')
+                            ->label('Quantity')
+                            ->helperText('Size of a single item (e.g., 1 if 1kg)')
+                            ->required()
+                            ->numeric()
+                            ->default(1),
+                        Select::make('unit')
+                            ->options([
+                                'kg' => 'Kilogram (kg)',
+                                'g' => 'Gram (g)',
+                                'ml' => 'Milliliter (ml)',
+                                'l' => 'Liter (l)',
+                                'piece' => 'Piece',
+                                'box' => 'Box',
+                                'pkt' => 'Packet',
+                                'bottle' => 'Bottle',
+                            ])
+                            ->required()
+                            ->searchable(),
+                        TextInput::make('barcode')
+                            ->label('Barcode')
+                            ->required()
+                            ->unique(\App\Models\Product::class, 'barcode', ignoreRecord: true),
+                            
+                        Tabs::make('Stock Dates')
+                            ->columnSpanFull()
+                            ->tabs([
+                                Tabs\Tab::make('Edit Old Stock')
+                                    ->schema([
+                                        DatePicker::make('mfg_date')
+                                            ->label('Manufacture Date')
+                                            ->native(true),
+                                        DatePicker::make('expiry_date')
+                                            ->label('Expiry Date')
+                                            ->required()
+                                            ->native(true),
+                                    ])->columns(2),
+                                Tabs\Tab::make('Edit New Stock')
+                                    ->visible(fn (?Product $record) => $record && $record->activeStockBatches()->count() > 0)
+                                    ->schema([
+                                        DatePicker::make('new_stock_mfg_date')
+                                            ->label('Manufacture Date')
+                                            ->native(true)
+                                            ->afterStateHydrated(function (DatePicker $component, ?Product $record) {
+                                                if ($record) {
+                                                    $batch = $record->activeStockBatches()->first();
+                                                    if ($batch) {
+                                                        $component->state($batch->mfg_date);
+                                                    }
+                                                }
+                                            }),
+                                        DatePicker::make('new_stock_expiry_date')
+                                            ->label('Expiry Date')
+                                            ->native(true)
+                                            ->afterStateHydrated(function (DatePicker $component, ?Product $record) {
+                                                if ($record) {
+                                                    $batch = $record->activeStockBatches()->first();
+                                                    if ($batch) {
+                                                        $component->state($batch->expiry_date);
+                                                    }
+                                                }
+                                            }),
+                                    ])->columns(2),
+                            ]),
+                    ])->columns(2),
+
                 Section::make('Pricing & Other Information')
                     ->schema([
                         TextInput::make('price')
                             ->required()
                             ->numeric()
-                            ->prefix(\App\Models\Setting::get('currency', '$')),
+                            ->prefix(\App\Models\Setting::get('currency', '$'))
+                            ->disabled(fn (?Product $record) => $record !== null)
+                            ->dehydrated()
+                            ->helperText(fn (?Product $record) => $record !== null ? 'Use the Price Adjustments module to change the price.' : null),
                         TextInput::make('cost_price')
+                            ->required(fn (?Product $record) => $record === null)
                             ->numeric()
-                            ->prefix(\App\Models\Setting::get('currency', '$')),
+                            ->prefix(\App\Models\Setting::get('currency', '$'))
+                            ->disabled(fn (?Product $record) => $record !== null)
+                            ->dehydrated()
+                            ->helperText(fn (?Product $record) => $record !== null ? 'Use the Price Adjustments module to change the cost.' : null),
                         TextInput::make('low_stock_notification')
                             ->label('Low Stock Warning Point')
                             ->required()

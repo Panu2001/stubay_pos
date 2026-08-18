@@ -9,8 +9,9 @@ class PriceAdjustmentForm
     public static function configure(Schema $schema): Schema
     {
         return $schema
+            ->columns(1)
             ->components([
-                \Filament\Forms\Components\Section::make('Select Product')
+                \Filament\Schemas\Components\Section::make('Select Product')
                     ->schema([
                         \Filament\Forms\Components\Select::make('product_id')
                             ->label('Product')
@@ -54,8 +55,10 @@ class PriceAdjustmentForm
                             }),
                     ]),
 
-                \Filament\Forms\Components\Grid::make(2)->schema([
-                    \Filament\Forms\Components\Section::make('Old Stock Prices (Current Base Product)')
+                \Filament\Schemas\Components\Tabs::make('Adjustments')
+                    ->tabs([
+                    \Filament\Schemas\Components\Tabs\Tab::make('Old Stock Prices (Current Base Product)')
+                        ->columns(2)
                         ->schema([
                             \Filament\Forms\Components\TextInput::make('old_stock_price_from')
                                 ->label('Current Old Selling Price')
@@ -73,9 +76,11 @@ class PriceAdjustmentForm
                                 ->label('New Old Cost Price')
                                 ->numeric()
                                 ->required(),
-                        ])->columnSpan(1),
+                        ]),
 
-                    \Filament\Forms\Components\Section::make('New Stock Prices (Waiting Batch)')
+                    \Filament\Schemas\Components\Tabs\Tab::make('New Stock Prices (Waiting Batch)')
+                        ->columns(2)
+                        ->hidden(fn (callable $get) => $get('new_stock_price_from') === null)
                         ->schema([
                             \Filament\Forms\Components\TextInput::make('new_stock_price_from')
                                 ->label('Current New Selling Price')
@@ -94,12 +99,12 @@ class PriceAdjustmentForm
                                 ->label('New New Cost Price')
                                 ->numeric()
                                 ->disabled(fn (callable $get) => $get('new_stock_cost_from') === null),
-                        ])->columnSpan(1),
+                        ])
                 ]),
                 
                 \Filament\Forms\Components\Hidden::make('user_id')->default(fn() => auth()->id()),
 
-                \Filament\Forms\Components\Section::make('Additional Information')
+                \Filament\Schemas\Components\Section::make('Additional Information')
                     ->schema([
                         \Filament\Forms\Components\Textarea::make('notes')
                             ->label('Reason for Price Adjustment')

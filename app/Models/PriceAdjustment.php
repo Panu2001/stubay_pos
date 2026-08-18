@@ -33,7 +33,7 @@ class PriceAdjustment extends Model
             if ($adjustment->old_stock_cost_to !== null) {
                 $product->cost_price = $adjustment->old_stock_cost_to;
             }
-            $product->saveQuietly(); // Use saveQuietly to prevent triggering updated loops
+            $product->save(); // Trigger Product::updated so it logs to PriceHistory
 
             // Update New Stock (Active ProductStockBatches)
             if ($adjustment->new_stock_price_to !== null || $adjustment->new_stock_cost_to !== null) {
