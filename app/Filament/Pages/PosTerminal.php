@@ -796,6 +796,9 @@ class PosTerminal extends Page
                     if ($batch) {
                         $batch->decrement('remaining_quantity', $item['quantity']);
                     }
+                    
+                    // Trigger auto-merge if Old Stock is exhausted
+                    $product->checkAndMergeStockBatches();
                 }
             }
 

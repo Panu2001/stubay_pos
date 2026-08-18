@@ -20,6 +20,7 @@ class SupplierPurchaseItem extends Model
             $product = $item->product;
             if ($product) {
                 $product->increment('stock_quantity', $item->quantity);
+                $product->checkAndMergeStockBatches();
             }
             
             // Recalculate parent purchase total
@@ -40,6 +41,7 @@ class SupplierPurchaseItem extends Model
                     $product = $item->product;
                     if ($product) {
                         $product->increment('stock_quantity', $diff);
+                        $product->checkAndMergeStockBatches();
                     }
                 }
             } else {
@@ -47,10 +49,12 @@ class SupplierPurchaseItem extends Model
                 $oldProduct = \App\Models\Product::find($oldProductId);
                 if ($oldProduct) {
                     $oldProduct->decrement('stock_quantity', $oldQuantity);
+                    $oldProduct->checkAndMergeStockBatches();
                 }
                 $newProduct = $item->product;
                 if ($newProduct) {
                     $newProduct->increment('stock_quantity', $item->quantity);
+                    $newProduct->checkAndMergeStockBatches();
                 }
             }
         });
@@ -67,6 +71,7 @@ class SupplierPurchaseItem extends Model
             $product = $item->product;
             if ($product) {
                 $product->decrement('stock_quantity', $item->quantity);
+                $product->checkAndMergeStockBatches();
             }
 
             // Recalculate parent purchase total

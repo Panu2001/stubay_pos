@@ -170,5 +170,7 @@ class StockAdjustment extends Model
                 $batch->increment('remaining_quantity', $delta);
             }
         }
+        
+        $product->checkAndMergeStockBatches();
     }
 }

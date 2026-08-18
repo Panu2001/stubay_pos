@@ -79,4 +79,30 @@ class Product extends Model
             }
         });
     }
+
+    public function checkAndMergeStockBatches()
+    {
+        // Refresh to get latest DB values
+        $this->refresh();
+        $totalStock = (int) $this->stock_quantity;
+        $batchStock = (int) $this->activeStockBatches()->sum('remaining_quantity');
+
+        // If Old Stock is 0 or less (Total <= New), merge New into Old
+        if ($totalStock <= $batchStock && $batchStock > 0) {
+            $batch = $this->activeStockBatches()->first();
+            
+            if ($batch) {
+                // Update product prices to match the new batch that is becoming old stock
+                $this->updateQuietly([
+                    'cost_price' => $batch->cost_price ?? $this->cost_price,
+                    'price' => $batch->new_price ?? $batch->price ?? $this->price,
+                ]);
+            }
+
+            // Clear all active batches (they are now the base old stock)
+            foreach ($this->activeStockBatches as $b) {
+                $b->updateQuietly(['remaining_quantity' => 0]);
+            }
+        }
+    }
 }

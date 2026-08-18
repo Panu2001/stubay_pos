@@ -14,6 +14,7 @@ use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
+use Filament\Forms\Components\Placeholder;
 use Illuminate\Support\Str;
 
 class ProductForm
@@ -83,11 +84,22 @@ class ProductForm
                                     ->required(fn (Get $get, ?Product $record) => ! $record && ! self::isAutoProduct($get))
                                     ->unique(\App\Models\Product::class, 'barcode', ignoreRecord: true),
                                 TextInput::make('stock_quantity')
-                                    ->label('Number of Stocks')
-                                    ->helperText('Total items available in inventory')
+                                    ->label('Initial Stock')
+                                    ->helperText('Initial stock quantity upon creation.')
                                     ->required(fn (Get $get, ?Product $record) => ! $record && ! self::isAutoProduct($get))
                                     ->numeric()
-                                    ->default(0),
+                                    ->default(0)
+                                    ->hidden(fn (?Product $record) => $record !== null),
+                                
+                                Placeholder::make('old_stock_display')
+                                    ->label('Number of Old Stocks')
+                                    ->content(fn (?Product $record) => $record ? (string) ($record->stock_quantity ?? 0) : '-')
+                                    ->visible(fn (?Product $record) => $record !== null),
+                                    
+                                Placeholder::make('new_stock_display')
+                                    ->label('Number of New Stocks')
+                                    ->content(fn (?Product $record) => $record ? (string) ($record->activeStockBatches()->sum('remaining_quantity') ?? 0) : '-')
+                                    ->visible(fn (?Product $record) => $record !== null),
                                 DatePicker::make('mfg_date')
                                     ->label('Manufacture Date')
                                     ->native(true),
@@ -165,11 +177,22 @@ class ProductForm
                                     ->default(true)
                                     ->required(fn (Get $get, ?Product $record) => ! $record && self::isAutoProduct($get)),
                                 TextInput::make('stock_quantity_auto')
-                                    ->label('Number of Stocks')
-                                    ->helperText('Total items available in inventory')
+                                    ->label('Initial Stock')
+                                    ->helperText('Initial stock quantity upon creation.')
                                     ->required(fn (Get $get, ?Product $record) => ! $record && self::isAutoProduct($get))
                                     ->numeric()
-                                    ->default(0),
+                                    ->default(0)
+                                    ->hidden(fn (?Product $record) => $record !== null),
+                                
+                                Placeholder::make('old_stock_display_auto')
+                                    ->label('Number of Old Stocks')
+                                    ->content(fn (?Product $record) => $record ? (string) ($record->stock_quantity ?? 0) : '-')
+                                    ->visible(fn (?Product $record) => $record !== null),
+                                    
+                                Placeholder::make('new_stock_display_auto')
+                                    ->label('Number of New Stocks')
+                                    ->content(fn (?Product $record) => $record ? (string) ($record->activeStockBatches()->sum('remaining_quantity') ?? 0) : '-')
+                                    ->visible(fn (?Product $record) => $record !== null),
                                 DatePicker::make('mfg_date_auto')
                                     ->label('Manufacture Date')
                                     ->native(true),

@@ -109,6 +109,15 @@ class StockAdjustmentResource extends Resource
                             return function (string $attribute, $value, \Closure $fail) use ($get) {
                                 $quantity = (int) $value;
                                 $type = $get('type');
+                                $productId = $get('product_id');
+
+                                if ($type === 'restock') {
+                                    $product = $productId ? \App\Models\Product::find($productId) : null;
+                                    if ($product && $product->activeStockBatches()->count() > 0) {
+                                        $fail('New stocks already exist. You can only restock when old stocks are completely vanished.');
+                                        return;
+                                    }
+                                }
 
                                 if ($type === 'adjustment') {
                                     if ($quantity === 0) {
@@ -125,7 +134,6 @@ class StockAdjustmentResource extends Resource
                                 }
 
                                 if (in_array($type, ['damage', 'return_to_supplier'], true)) {
-                                    $productId = $get('product_id');
                                     $product = $productId ? \App\Models\Product::find($productId) : null;
 
                                     if ($product && $quantity > (int) $product->stock_quantity) {
