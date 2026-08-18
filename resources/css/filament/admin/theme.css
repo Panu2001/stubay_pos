@@ -473,10 +473,14 @@ input.fi-input::placeholder {
    6. MODAL / DIALOG
    ---------------------------------------------------------------- */
 .fi-modal-window {
+    background-color: #ffffff !important;
     border-radius: 0.75rem !important;
     overflow: visible !important;
     border: 1px solid #e5e7eb !important;
     box-shadow: 0 20px 60px rgba(0,0,0,0.12) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
 }
 .dark .fi-modal-window {
     background-color: #18181b !important;
