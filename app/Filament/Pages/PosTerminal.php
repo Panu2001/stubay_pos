@@ -386,7 +386,6 @@ class PosTerminal extends Page
 
         if (! $product) {
             $product = Product::with('activeStockBatches')->where('name', 'like', "%{$searchQuery}%")
-                ->orWhere('barcode', 'like', "%{$searchQuery}%")
                 ->orderByRaw('barcode = ? desc', [$searchQuery])
                 ->orderByRaw('name = ? desc', [$searchQuery])
                 ->first();
