@@ -1,0 +1,232 @@
+<div class="pos-lend-history-page">
+    <style>
+        .pos-lend-history-page {
+            display: grid;
+            gap: 1rem;
+            width: 100%;
+        }
+
+        .pos-lend-history-summary {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 0.75rem;
+        }
+
+        .pos-lend-history-stat,
+        .pos-lend-history-card {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            background: #18181b;
+            box-shadow: 0 14px 38px rgba(0, 0, 0, 0.18);
+        }
+
+        .pos-lend-history-stat {
+            padding: 1rem;
+        }
+
+        .pos-lend-history-stat span {
+            display: block;
+            color: #a1a1aa;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .pos-lend-history-stat strong {
+            display: block;
+            margin-top: 0.4rem;
+            color: #f8fafc;
+            font-size: 1.25rem;
+        }
+
+        .pos-lend-history-card {
+            overflow: hidden;
+        }
+
+        .pos-lend-history-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .pos-lend-history-card-header h3 {
+            margin: 0;
+            color: #f8fafc;
+            font-size: 1rem;
+            font-weight: 700;
+        }
+
+        .pos-lend-history-table-wrap {
+            overflow-x: auto;
+        }
+
+        .pos-lend-history-table {
+            width: 100%;
+            min-width: 900px;
+            border-collapse: collapse;
+        }
+
+        .pos-lend-history-table th,
+        .pos-lend-history-table td {
+            padding: 0.85rem 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            color: #d4d4d8;
+            font-size: 0.9rem;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        .pos-lend-history-table th {
+            color: #a1a1aa;
+            font-size: 0.76rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .pos-lend-history-money {
+            color: #f8fafc;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .pos-lend-history-remaining {
+            color: #fb7185;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        .pos-lend-history-paid {
+            color: #00d39b;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        .pos-lend-history-badge {
+            display: inline-flex;
+            padding: 0.2rem 0.55rem;
+            border-radius: 999px;
+            background: rgba(251, 191, 36, 0.12);
+            color: #fbbf24;
+            font-size: 0.78rem;
+            font-weight: 700;
+        }
+
+        .pos-lend-history-badge.is-paid {
+            background: rgba(0, 211, 155, 0.12);
+            color: #00d39b;
+        }
+
+        .pos-lend-history-items {
+            display: grid;
+            gap: 0.25rem;
+            min-width: 14rem;
+        }
+
+        .pos-lend-history-item {
+            color: #c4c7d8;
+            font-size: 0.85rem;
+        }
+
+        .pos-lend-history-empty {
+            padding: 2rem;
+            color: #a1a1aa;
+            text-align: center;
+        }
+
+        @media (max-width: 900px) {
+            .pos-lend-history-summary {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+    </style>
+
+    <div class="pos-lend-history-summary">
+        <div class="pos-lend-history-stat">
+            <span>Total Lends</span>
+            <strong>{{ $currency }}{{ number_format((float) $stats['total_lends'], 2) }}</strong>
+        </div>
+        <div class="pos-lend-history-stat">
+            <span>Total Paid</span>
+            <strong>{{ $currency }}{{ number_format((float) $stats['total_paid'], 2) }}</strong>
+        </div>
+        <div class="pos-lend-history-stat">
+            <span>Outstanding</span>
+            <strong>{{ $currency }}{{ number_format((float) $stats['outstanding'], 2) }}</strong>
+        </div>
+        <div class="pos-lend-history-stat">
+            <span>Open Lends</span>
+            <strong>{{ $stats['open_lends'] }}</strong>
+        </div>
+    </div>
+
+    <div class="pos-lend-history-card">
+        <div class="pos-lend-history-card-header">
+            <h3>{{ $customer->name }} lend history</h3>
+        </div>
+
+        @if ($lends->isEmpty())
+            <div class="pos-lend-history-empty">
+                No lend history recorded for this customer.
+            </div>
+        @else
+            <div class="pos-lend-history-table-wrap">
+                <table class="pos-lend-history-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Order</th>
+                            <th>Items</th>
+                            <th>Total</th>
+                            <th>Paid</th>
+                            <th>Remaining</th>
+                            <th>Status</th>
+                            <th>Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($lends as $lend)
+                            @php
+                                $order = $lend->order;
+                                $items = $order ? $order->items : collect();
+                                $status = $lend->status ?: 'unpaid';
+                                $statusLabel = ucwords(str_replace('_', ' ', $status));
+                                $isPaid = $status === 'paid';
+                                $remainingAmount = (float) $lend->remaining_amount;
+                            @endphp
+                            <tr>
+                                <td>{{ optional($lend->created_at)->format('M d, Y h:i A') }}</td>
+                                <td>{{ $order ? $order->order_number : 'No linked order' }}</td>
+                                <td>
+                                    <div class="pos-lend-history-items">
+                                        @forelse ($items as $item)
+                                            <div class="pos-lend-history-item">
+                                                {{ $item->name }} x {{ $item->quantity }}
+                                                - {{ $currency }}{{ number_format((float) $item->unit_price, 2) }}
+                                            </div>
+                                        @empty
+                                            <div class="pos-lend-history-item">No item details</div>
+                                        @endforelse
+                                    </div>
+                                </td>
+                                <td class="pos-lend-history-money">{{ $currency }}{{ number_format((float) $lend->total_amount, 2) }}</td>
+                                <td class="pos-lend-history-paid">{{ $currency }}{{ number_format((float) $lend->paid_amount, 2) }}</td>
+                                <td class="{{ $remainingAmount > 0 ? 'pos-lend-history-remaining' : 'pos-lend-history-paid' }}">
+                                    {{ $currency }}{{ number_format($remainingAmount, 2) }}
+                                </td>
+                                <td>
+                                    <span class="pos-lend-history-badge {{ $isPaid ? 'is-paid' : '' }}">
+                                        {{ $statusLabel }}
+                                    </span>
+                                </td>
+                                <td>{{ $lend->notes ?: '-' }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        @endif
+    </div>
+</div>

@@ -1,0 +1,3510 @@
+@import '../../../../vendor/filament/filament/resources/css/theme.css';
+
+@source '../../../../app/Filament/**/*';
+@source '../../../../resources/views/filament/**/*';
+
+/* ================================================================
+   COMPREHENSIVE UI POLISH — FILAMENT ADMIN PANEL
+   Fixes: inputs, buttons, spacing, typography, modals, tables,
+          pagination, filters, tabs, toggles, badges, toolbars
+   ================================================================ */
+
+/* ----------------------------------------------------------------
+   1. TYPOGRAPHY & SPACING BASELINE
+   ---------------------------------------------------------------- */
+.fi-body,
+.fi-body * {
+    font-family: "DM Sans", system-ui, sans-serif;
+    line-height: 1.6;
+}
+
+body, .fi-body { 
+    background-color: #f9fafb !important; 
+    color: #111827 !important; 
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.dark body, .dark .fi-body { 
+    background-color: #09090b !important; 
+    color: white !important; 
+}
+
+
+.nav-tab { transition: all 0.2s; }
+.nav-tab.active { border-bottom: 2px solid #10b981; color: #10b981; }
+.stat-card { transition: transform 0.2s; }
+.stat-card:hover { transform: translateY(-2px); }
+.action-btn:hover { transform: scale(1.02); }
+
+/* Fix collapsed inputs standard height padding */
+.fi-input-wrp input, 
+.fi-select-wrp select {
+    padding: 0.5rem 0.75rem !important;
+}
+/* Page heading */
+.fi-header-heading {
+    font-size: 1.25rem !important;
+    font-weight: 700 !important;
+    color: #111827 !important;
+}
+.dark .fi-header-heading {
+    color: #f4f4f5 !important;
+}
+.fi-header-subheading {
+    font-size: 0.8125rem !important;
+    color: #6b7280 !important;
+    margin-top: 0.125rem !important;
+}
+.dark .fi-header-subheading {
+    color: #71717a !important;
+}
+
+/* Labels */
+.fi-fo-field-wrp-label label {
+    display: block;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 0.375rem;
+    letter-spacing: 0.01em;
+}
+.dark .fi-fo-field-wrp-label label {
+    color: #a1a1aa;
+}
+
+/* Helper text below fields */
+.fi-fo-field-wrp-helper-text {
+    font-size: 0.75rem;
+    color: #6b7280;
+    margin-top: 0.25rem;
+    line-height: 1.4;
+}
+.dark .fi-fo-field-wrp-helper-text {
+    color: #71717a;
+}
+
+/* ----------------------------------------------------------------
+   2. FORM FIELD SPACING
+   ---------------------------------------------------------------- */
+.fi-fo-component-ctn {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Gap between form fields */
+.fi-fo-layout-grid,
+.fi-schema-component-container {
+    gap: 1.25rem;
+}
+
+/* Field wrapper padding */
+.fi-fo-field-wrp {
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+/* ----------------------------------------------------------------
+   3. INPUT WRAPPER — Core layout fix (Filament v4 exact classes)
+   ---------------------------------------------------------------- */
+
+/* The outer box: border, radius, background — flex ROW, stretch height */
+.fi-input-wrp {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: stretch !important;        /* critical: prefix/suffix fill full height */
+    width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+    border-radius: 0.5rem !important;
+    border: 1.5px solid #d1d5db !important;
+    background-color: #ffffff !important;
+    overflow: hidden !important;            /* clips prefix bg to rounded corners */
+    transition: border-color 0.15s, box-shadow 0.15s !important;
+    position: relative !important;
+}
+.dark .fi-input-wrp {
+    background-color: #111113 !important;
+    border-color: rgba(255,255,255,0.12) !important;
+}
+/* Focus ring */
+.fi-input-wrp:focus-within {
+    border-color: #10b981 !important;
+    box-shadow: 0 0 0 3px rgba(16,185,129,0.12) !important;
+    outline: none !important;
+}
+.dark .fi-input-wrp:focus-within {
+    border-color: #10b981 !important;
+    box-shadow: 0 0 0 3px rgba(16,185,129,0.15) !important;
+}
+/* Invalid / error state */
+.fi-input-wrp.fi-invalid {
+    border-color: #ef4444 !important;
+    box-shadow: 0 0 0 3px rgba(239,68,68,0.10) !important;
+}
+/* Disabled state */
+.fi-input-wrp.fi-disabled {
+    opacity: 0.6 !important;
+    cursor: not-allowed !important;
+    background-color: #f9fafb !important;
+}
+.dark .fi-input-wrp.fi-disabled {
+    background-color: #0a0a0c !important;
+}
+
+/* ----------------------------------------------------------------
+   PREFIX AREA  (.fi-input-wrp-prefix)
+   Contains: icon, loading spinner, and/or the label text span
+   ---------------------------------------------------------------- */
+.fi-input-wrp-prefix {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-shrink: 0 !important;
+    padding: 0 0.625rem !important;
+    color: #9ca3af !important;
+    /* no background by default — only when it has a label */
+}
+.dark .fi-input-wrp-prefix {
+    color: #52525b !important;
+}
+
+/* When the prefix has actual TEXT content (e.g. currency symbol $) */
+.fi-input-wrp-prefix.fi-input-wrp-prefix-has-label {
+    background-color: #f3f4f6 !important;
+    border-right: 1.5px solid #e5e7eb !important;
+    padding: 0 0.75rem !important;
+    font-size: 0.8125rem !important;
+    font-weight: 600 !important;
+    color: #6b7280 !important;
+    white-space: nowrap !important;
+}
+.dark .fi-input-wrp-prefix.fi-input-wrp-prefix-has-label {
+    background-color: #1c1c1f !important;
+    border-right-color: rgba(255,255,255,0.08) !important;
+    color: #71717a !important;
+}
+
+/* Inline prefix (no separator, icon overlaps input) */
+.fi-input-wrp-prefix.fi-inline {
+    position: absolute !important;
+    left: 0 !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    padding: 0 0.625rem !important;
+    background: none !important;
+    border: none !important;
+    pointer-events: none !important;
+    z-index: 1 !important;
+}
+
+/* The label span inside prefix (the $ / text) */
+.fi-input-wrp-prefix .fi-input-wrp-label,
+.fi-input-wrp-suffix .fi-input-wrp-label {
+    font-size: 0.875rem !important;
+    font-weight: 600 !important;
+    color: #6b7280 !important;
+    white-space: nowrap !important;
+    line-height: 1 !important;
+    user-select: none !important;
+}
+.dark .fi-input-wrp-prefix .fi-input-wrp-label,
+.dark .fi-input-wrp-suffix .fi-input-wrp-label {
+    color: #71717a !important;
+}
+
+/* ----------------------------------------------------------------
+   SUFFIX AREA  (.fi-input-wrp-suffix)
+   ---------------------------------------------------------------- */
+.fi-input-wrp-suffix {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-shrink: 0 !important;
+    padding: 0 0.625rem !important;
+    color: #9ca3af !important;
+}
+.dark .fi-input-wrp-suffix {
+    color: #52525b !important;
+}
+
+/* When suffix has text label */
+.fi-input-wrp-suffix.fi-input-wrp-suffix-has-label {
+    background-color: #f3f4f6 !important;
+    border-left: 1.5px solid #e5e7eb !important;
+    padding: 0 0.75rem !important;
+    font-size: 0.8125rem !important;
+    font-weight: 600 !important;
+    color: #6b7280 !important;
+    white-space: nowrap !important;
+}
+.dark .fi-input-wrp-suffix.fi-input-wrp-suffix-has-label {
+    background-color: #1c1c1f !important;
+    border-left-color: rgba(255,255,255,0.08) !important;
+    color: #71717a !important;
+}
+
+/* ----------------------------------------------------------------
+   CONTENT CONTAINER  (.fi-input-wrp-content-ctn)
+   Wraps the actual <input> / <select> / <textarea>
+   ---------------------------------------------------------------- */
+.fi-input-wrp-content-ctn {
+    flex: 1 1 0% !important;
+    min-width: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    width: 100% !important;
+}
+
+/* ----------------------------------------------------------------
+   THE ACTUAL INPUT  (.fi-input inside .fi-input-wrp)
+   ---------------------------------------------------------------- */
+.fi-input-wrp input,
+.fi-input-wrp textarea,
+input.fi-input,
+textarea.fi-input {
+    width: 100% !important;
+    flex: 1 1 0% !important;
+    min-width: 0 !important;
+    height: 2.5rem !important;
+    padding: 0 0.75rem !important;
+    font-size: 0.875rem !important;
+    font-weight: 400 !important;
+    line-height: 1.5 !important;
+    color: #111827 !important;
+    background-color: transparent !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    box-sizing: border-box !important;
+}
+.dark .fi-input-wrp input,
+.dark .fi-input-wrp textarea,
+.dark input.fi-input,
+.dark textarea.fi-input {
+    color: #f4f4f5 !important;
+}
+/* Input with inline prefix icon — add left padding */
+.fi-input-wrp input.fi-input-has-inline-prefix {
+    padding-inline-start: 3.25rem !important;
+}
+/* Placeholder */
+.fi-input-wrp input::placeholder,
+.fi-input-wrp textarea::placeholder,
+input.fi-input::placeholder {
+    color: #9ca3af !important;
+    font-weight: 400 !important;
+}
+.dark .fi-input-wrp input::placeholder,
+.dark input.fi-input::placeholder {
+    color: #4b4b52 !important;
+}
+
+/* ----------------------------------------------------------------
+   TEXTAREA (taller, resizable)
+   ---------------------------------------------------------------- */
+.fi-input-wrp textarea {
+    height: auto !important;
+    min-height: 5.5rem !important;
+    padding: 0.625rem 0.75rem !important;
+    resize: vertical !important;
+    align-self: stretch !important;
+    line-height: 1.6 !important;
+}
+
+/* ----------------------------------------------------------------
+   ACTIONS inside prefix/suffix (small icon buttons)
+   ---------------------------------------------------------------- */
+.fi-input-wrp-actions {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.125rem !important;
+}
+.fi-input-wrp-actions .fi-btn {
+    padding: 0.25rem !important;
+    background: none !important;
+    border: none !important;
+    color: #9ca3af !important;
+    border-radius: 0.25rem !important;
+    transition: color 0.15s !important;
+}
+.fi-input-wrp-actions .fi-btn:hover {
+    color: #374151 !important;
+    background-color: #f3f4f6 !important;
+}
+.dark .fi-input-wrp-actions .fi-btn {
+    color: #52525b !important;
+}
+.dark .fi-input-wrp-actions .fi-btn:hover {
+    color: #e4e4e7 !important;
+    background-color: #27272a !important;
+}
+
+
+
+/* ----------------------------------------------------------------
+   4. SELECT DROPDOWNS
+   ---------------------------------------------------------------- */
+.fi-select-wrp select {
+    appearance: none;
+    cursor: pointer;
+    padding-right: 2.5rem !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%236b7280'%3E%3Cpath fill-rule='evenodd' d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 011.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z' clip-rule='evenodd' /%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 0.75rem center !important;
+    background-size: 1rem !important;
+}
+
+/* ----------------------------------------------------------------
+   5. BUTTONS — All types, sizes, states
+   ---------------------------------------------------------------- */
+.fi-btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0.5rem !important;
+    padding: 0.5rem 1rem !important;
+    font-size: 0.875rem !important;
+    font-weight: 600 !important;
+    border-radius: 0.5rem !important;
+    border: 1px solid transparent !important;
+    cursor: pointer !important;
+    transition: all 0.15s ease !important;
+    line-height: 1.5 !important;
+    white-space: nowrap !important;
+    text-decoration: none !important;
+}
+
+.fi-btn:focus-visible {
+    outline: 2px solid #10b981 !important;
+    outline-offset: 2px !important;
+}
+
+.fi-btn-size-sm {
+    padding: 0.375rem 0.75rem !important;
+    font-size: 0.8125rem !important;
+}
+.fi-btn-size-lg {
+    padding: 0.625rem 1.25rem !important;
+    font-size: 0.9375rem !important;
+}
+
+/* Primary */
+.fi-btn.fi-color-primary,
+.fi-btn[class*="fi-color-primary"] {
+    background-color: #059669 !important;
+    border-color: #059669 !important;
+    color: #ffffff !important;
+}
+.fi-btn.fi-color-primary:hover {
+    background-color: #047857 !important;
+    border-color: #047857 !important;
+}
+
+/* Success */
+.fi-btn.fi-color-success {
+    background-color: #16a34a !important;
+    border-color: #16a34a !important;
+    color: #ffffff !important;
+}
+.fi-btn.fi-color-success:hover {
+    background-color: #15803d !important;
+}
+
+/* Danger */
+.fi-btn.fi-color-danger {
+    background-color: #dc2626 !important;
+    border-color: #dc2626 !important;
+    color: #ffffff !important;
+}
+.fi-btn.fi-color-danger:hover {
+    background-color: #b91c1c !important;
+}
+
+/* Warning */
+.fi-btn.fi-color-warning {
+    background-color: #d97706 !important;
+    border-color: #d97706 !important;
+    color: #ffffff !important;
+}
+.fi-btn.fi-color-warning:hover {
+    background-color: #b45309 !important;
+}
+
+/* Gray / secondary */
+.fi-btn.fi-color-gray {
+    background-color: #f3f4f6 !important;
+    border-color: #e5e7eb !important;
+    color: #374151 !important;
+}
+.fi-btn.fi-color-gray:hover {
+    background-color: #e5e7eb !important;
+}
+.dark .fi-btn.fi-color-gray {
+    background-color: #27272a !important;
+    border-color: rgba(255,255,255,0.08) !important;
+    color: #e4e4e7 !important;
+}
+.dark .fi-btn.fi-color-gray:hover {
+    background-color: #3f3f46 !important;
+}
+
+/* Info */
+.fi-btn.fi-color-info {
+    background-color: #0284c7 !important;
+    border-color: #0284c7 !important;
+    color: #ffffff !important;
+}
+.fi-btn.fi-color-info:hover {
+    background-color: #0369a1 !important;
+}
+
+/* Disabled */
+.fi-btn:disabled,
+.fi-btn[disabled] {
+    opacity: 0.5 !important;
+    cursor: not-allowed !important;
+    pointer-events: none !important;
+}
+
+/* ----------------------------------------------------------------
+   6. MODAL / DIALOG
+   ---------------------------------------------------------------- */
+.fi-modal-window {
+    border-radius: 0.75rem !important;
+    overflow: visible !important;
+    border: 1px solid #e5e7eb !important;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.12) !important;
+}
+.dark .fi-modal-window {
+    background-color: #18181b !important;
+    border-color: rgba(255,255,255,0.06) !important;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5) !important;
+}
+
+.fi-modal-header {
+    padding: 1.25rem 1.5rem !important;
+    border-bottom: 1px solid #f3f4f6 !important;
+}
+.dark .fi-modal-header {
+    border-bottom-color: rgba(255,255,255,0.05) !important;
+}
+
+.fi-modal-heading {
+    font-size: 1rem !important;
+    font-weight: 700 !important;
+    color: #111827 !important;
+}
+.dark .fi-modal-heading {
+    color: #f4f4f5 !important;
+}
+
+.fi-modal-content {
+    padding: 1.25rem 1.5rem !important;
+    overflow: visible !important;
+}
+
+.fi-modal-footer {
+    padding: 1rem 1.5rem !important;
+    border-top: 1px solid #f3f4f6 !important;
+    display: flex !important;
+    justify-content: flex-end !important;
+    gap: 0.75rem !important;
+}
+.dark .fi-modal-footer {
+    border-top-color: rgba(255,255,255,0.05) !important;
+}
+
+/* Modal form fields must be full width */
+.fi-modal-content .fi-fo-field-wrp,
+.fi-modal-content .fi-input-wrp,
+.fi-modal-content .fi-select-wrp,
+.fi-modal-content .fi-fo-select,
+.fi-modal-content .fi-fo-select-wrp,
+.fi-modal-content .fi-select-input,
+.fi-modal-content .fi-select-input-ctn,
+.fi-modal-content input:not([type="radio"]):not([type="checkbox"]),
+.fi-modal-content select,
+.fi-modal-content textarea {
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+.fi-modal-window:has(.fi-dropdown-panel),
+.fi-modal-content:has(.fi-dropdown-panel),
+.fi-modal-content .fi-fo-field-wrp:has(.fi-dropdown-panel),
+.fi-modal-content .fi-sc-component:has(.fi-dropdown-panel) {
+    overflow: visible !important;
+}
+
+/* ----------------------------------------------------------------
+   7. SECTIONS & CARDS
+   ---------------------------------------------------------------- */
+.fi-section {
+    border-radius: 0.75rem !important;
+    border: 1px solid #e5e7eb !important;
+    overflow: hidden !important;
+    background-color: #ffffff !important;
+}
+.dark .fi-section {
+    background-color: #18181b !important;
+    border-color: rgba(255,255,255,0.05) !important;
+}
+
+.fi-loading-section:empty,
+.fi-section.fi-loading-section:not(:has(*)) {
+    display: none !important;
+}
+
+.fi-section-header {
+    padding: 1rem 1.25rem !important;
+    border-bottom: 1px solid #f3f4f6 !important;
+    font-weight: 700 !important;
+    font-size: 0.9375rem !important;
+    color: #111827 !important;
+    background-color: #fafafa !important;
+}
+.dark .fi-section-header {
+    border-bottom-color: rgba(255,255,255,0.05) !important;
+    color: #f4f4f5 !important;
+    background-color: #1c1c1f !important;
+}
+
+.fi-section-content {
+    padding: 1.25rem !important;
+}
+
+/* ----------------------------------------------------------------
+   8. TABLE POLISH
+   ---------------------------------------------------------------- */
+.fi-ta-ctn {
+    border-radius: 0.75rem !important;
+    border: 1px solid #e5e7eb !important;
+    overflow: hidden !important;
+    background-color: #ffffff !important;
+}
+.dark .fi-ta-ctn {
+    border-color: rgba(255,255,255,0.05) !important;
+    background-color: #18181b !important;
+}
+
+
+/* Table toolbar — the actual class Filament uses */
+.fi-ta-header-toolbar {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 0.75rem !important;
+    padding: 0.625rem 1rem !important;
+    background-color: #ffffff !important;
+    border-bottom: 1px solid #e5e7eb !important;
+    flex-wrap: wrap !important;
+    min-height: 3.25rem !important;
+}
+.dark .fi-ta-header-toolbar {
+    background-color: #18181b !important;
+    border-bottom-color: rgba(255,255,255,0.07) !important;
+}
+
+/* Left side: toolbar/bulk action buttons */
+.fi-ta-header-toolbar > .fi-ta-actions {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    flex-wrap: wrap !important;
+    flex: 1 1 auto !important;
+}
+
+/* Right side: anonymous div containing search + filter + columns */
+.fi-ta-header-toolbar > div:not(.fi-ta-actions):not(.fi-ta-grouping-settings) {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    flex-shrink: 0 !important;
+    flex-wrap: nowrap !important;
+}
+
+/* Vertical divider when left-side has content */
+.fi-ta-header-toolbar > .fi-ta-actions:not(:empty) + div {
+    padding-left: 0.75rem !important;
+    border-left: 1px solid #e5e7eb !important;
+    margin-left: 0.25rem !important;
+}
+.dark .fi-ta-header-toolbar > .fi-ta-actions:not(:empty) + div {
+    border-left-color: rgba(255,255,255,0.07) !important;
+}
+
+/* Search field — compact width, expands on focus */
+.fi-ta-search-field {
+    display: flex !important;
+    align-items: center !important;
+    flex-shrink: 0 !important;
+}
+.fi-ta-search-field .fi-input-wrp {
+    width: 13rem !important;
+    min-width: 0 !important;
+    height: 2.25rem !important;
+    border: 1px solid #e5e7eb !important;
+    border-radius: 0.5rem !important;
+    background-color: #f9fafb !important;
+    transition: border-color 0.15s, box-shadow 0.15s, width 0.2s ease !important;
+}
+.fi-ta-search-field .fi-input-wrp:focus-within {
+    border-color: #10b981 !important;
+    background-color: #ffffff !important;
+    box-shadow: 0 0 0 3px rgba(16,185,129,0.12) !important;
+    width: 16rem !important;
+}
+.fi-ta-search-field .fi-input-wrp input {
+    height: 2.25rem !important;
+    padding-block: 0 !important;
+    padding-inline-end: 0.75rem !important;
+    font-size: 0.8125rem !important;
+    background: transparent !important;
+}
+
+.fi-ta-search-field .fi-input-wrp input.fi-input-has-inline-prefix,
+.fi-ta-search .fi-input-wrp input.fi-input-has-inline-prefix,
+.fi-ta-header-toolbar input[type="search"].fi-input-has-inline-prefix,
+.fi-global-search-field input.fi-input-has-inline-prefix {
+    padding-inline-start: 3.25rem !important;
+}
+.dark .fi-ta-search-field .fi-input-wrp {
+    border-color: rgba(255,255,255,0.1) !important;
+    background-color: #09090b !important;
+}
+.dark .fi-ta-search-field .fi-input-wrp:focus-within {
+    border-color: #10b981 !important;
+    background-color: #09090b !important;
+}
+
+/* Filters & Column-manager wrapper: make them inline-flex */
+.fi-ta-filters-dropdown,
+.fi-ta-filters-modal,
+.fi-ta-column-manager-dropdown,
+.fi-ta-column-manager-modal,
+.fi-ta-filters-trigger-action-ctn {
+    display: inline-flex !important;
+    align-items: center !important;
+    flex-shrink: 0 !important;
+}
+
+/* Trigger button inside filter and column-manager wrappers */
+.fi-ta-filters-dropdown .fi-btn,
+.fi-ta-filters-modal .fi-btn,
+.fi-ta-column-manager-dropdown .fi-btn,
+.fi-ta-column-manager-modal .fi-btn,
+.fi-ta-filters-trigger-action-ctn .fi-btn {
+    height: 2.25rem !important;
+    padding: 0 0.875rem !important;
+    border-radius: 0.5rem !important;
+    font-size: 0.8125rem !important;
+    font-weight: 600 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.375rem !important;
+    border: 1px solid #e5e7eb !important;
+    background-color: #f9fafb !important;
+    color: #374151 !important;
+    cursor: pointer !important;
+    white-space: nowrap !important;
+    transition: all 0.15s !important;
+    box-shadow: none !important;
+}
+.fi-ta-filters-dropdown .fi-btn:hover,
+.fi-ta-filters-modal .fi-btn:hover,
+.fi-ta-column-manager-dropdown .fi-btn:hover,
+.fi-ta-column-manager-modal .fi-btn:hover {
+    border-color: #10b981 !important;
+    background-color: #ecfdf5 !important;
+    color: #065f46 !important;
+}
+/* Active filter count badge */
+.fi-ta-filters-dropdown .fi-badge,
+.fi-ta-filters-modal .fi-badge,
+.fi-ta-filters-trigger-action-ctn .fi-badge {
+    font-size: 0.65rem !important;
+    padding: 0.1rem 0.4rem !important;
+    border-radius: 9999px !important;
+    background-color: #10b981 !important;
+    color: white !important;
+    border: none !important;
+}
+/* Dark mode trigger buttons */
+.dark .fi-ta-filters-dropdown .fi-btn,
+.dark .fi-ta-filters-modal .fi-btn,
+.dark .fi-ta-column-manager-dropdown .fi-btn,
+.dark .fi-ta-column-manager-modal .fi-btn,
+.dark .fi-ta-filters-trigger-action-ctn .fi-btn {
+    border-color: rgba(255,255,255,0.1) !important;
+    background-color: #27272a !important;
+    color: #d4d4d8 !important;
+}
+.dark .fi-ta-filters-dropdown .fi-btn:hover,
+.dark .fi-ta-filters-modal .fi-btn:hover,
+.dark .fi-ta-column-manager-dropdown .fi-btn:hover,
+.dark .fi-ta-column-manager-modal .fi-btn:hover {
+    border-color: #10b981 !important;
+    background-color: rgba(16,185,129,0.12) !important;
+    color: #34d399 !important;
+}
+
+
+
+/* Table header columns */
+.fi-ta-header-cell {
+    padding: 0.75rem 1rem !important;
+    font-size: 0.75rem !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.06em !important;
+    color: #6b7280 !important;
+    background-color: #fafafa !important;
+    border-bottom: 1px solid #f3f4f6 !important;
+    white-space: nowrap !important;
+}
+.dark .fi-ta-header-cell {
+    color: #71717a !important;
+    background-color: #1c1c1f !important;
+    border-bottom-color: rgba(255,255,255,0.05) !important;
+}
+
+/* Sort icon in header */
+.fi-ta-header-cell-sort-icon {
+    opacity: 0.5 !important;
+    flex-shrink: 0 !important;
+}
+.fi-ta-header-cell:hover .fi-ta-header-cell-sort-icon {
+    opacity: 1 !important;
+}
+
+/* Table cells */
+.fi-ta-cell {
+    padding: 0.875rem 1rem !important;
+    font-size: 0.875rem !important;
+    line-height: 1.5 !important;
+    color: #374151 !important;
+    border-bottom: 1px solid #f3f4f6 !important;
+    vertical-align: middle !important;
+}
+
+.fi-ta-actions-header-cell,
+.fi-ta-cell:has(.fi-ta-actions) {
+    padding-right: 1.5rem !important;
+}
+
+.fi-ta-actions {
+    gap: 0.75rem !important;
+}
+
+.dark .fi-ta-cell {
+    color: #d4d4d8 !important;
+    border-bottom-color: rgba(255,255,255,0.04) !important;
+}
+
+.fi-ta-row:last-child .fi-ta-cell {
+    border-bottom: none !important;
+}
+
+.fi-ta-row:hover .fi-ta-cell {
+    background-color: #f9fafb !important;
+}
+.dark .fi-ta-row:hover .fi-ta-cell {
+    background-color: rgba(255,255,255,0.02) !important;
+}
+
+/* Table text items */
+.fi-ta-text-item {
+    font-size: 0.875rem !important;
+    color: #374151 !important;
+    line-height: 1.5 !important;
+}
+.dark .fi-ta-text-item {
+    color: #d4d4d8 !important;
+}
+
+/* Table text item label (secondary text below) */
+.fi-ta-text-item-label {
+    font-size: 0.75rem !important;
+    color: #9ca3af !important;
+    line-height: 1.4 !important;
+    margin-top: 0.125rem !important;
+}
+.dark .fi-ta-text-item-label {
+    color: #71717a !important;
+}
+
+/* Table empty state */
+.fi-ta-empty-state {
+    padding: 3rem 1rem !important;
+    text-align: center !important;
+    background-color: #fafafa !important;
+}
+.dark .fi-ta-empty-state {
+    background-color: #1c1c1f !important;
+}
+
+.fi-ta-empty-state-icon {
+    color: #d1d5db !important;
+    margin-bottom: 1rem !important;
+}
+.dark .fi-ta-empty-state-icon {
+    color: #3f3f46 !important;
+}
+
+.fi-ta-empty-state-heading {
+    font-size: 0.9375rem !important;
+    font-weight: 600 !important;
+    color: #374151 !important;
+    margin-bottom: 0.375rem !important;
+}
+.dark .fi-ta-empty-state-heading {
+    color: #a1a1aa !important;
+}
+
+.fi-ta-empty-state-description {
+    font-size: 0.8125rem !important;
+    color: #9ca3af !important;
+}
+.dark .fi-ta-empty-state-description {
+    color: #71717a !important;
+}
+
+/* ----------------------------------------------------------------
+   9. TABLE TOOLBAR — Filters, Bulk Actions
+   ---------------------------------------------------------------- */
+
+/* Bulk actions bar (appears when rows selected) */
+.fi-ta-selection-indicator {
+    padding: 0.625rem 1rem !important;
+    background-color: #ecfdf5 !important;
+    border-bottom: 1px solid #a7f3d0 !important;
+    font-size: 0.8125rem !important;
+    font-weight: 600 !important;
+    color: #065f46 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.75rem !important;
+}
+.dark .fi-ta-selection-indicator {
+    background-color: rgba(16,185,129,0.08) !important;
+    border-bottom-color: rgba(16,185,129,0.2) !important;
+    color: #34d399 !important;
+}
+
+/* Filter toggle button */
+.fi-ta-filters-toggle-btn {
+    position: relative !important;
+}
+
+/* Active filter count badge on filter button */
+.fi-ta-filters-active-count {
+    position: absolute !important;
+    top: -0.375rem !important;
+    right: -0.375rem !important;
+    min-width: 1.125rem !important;
+    height: 1.125rem !important;
+    padding: 0 0.25rem !important;
+    border-radius: 9999px !important;
+    background-color: #10b981 !important;
+    color: #ffffff !important;
+    font-size: 0.625rem !important;
+    font-weight: 700 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    line-height: 1 !important;
+}
+
+/* ----------------------------------------------------------------
+   10. TABLE FILTERS PANEL
+   ---------------------------------------------------------------- */
+.fi-ta-filters-ctn {
+    padding: 1rem !important;
+    background-color: #f9fafb !important;
+    border-bottom: 1px solid #f3f4f6 !important;
+}
+.dark .fi-ta-filters-ctn {
+    background-color: #1c1c1f !important;
+    border-bottom-color: rgba(255,255,255,0.05) !important;
+}
+
+/* Filter layout grid */
+.fi-ta-filters-layout {
+    display: grid !important;
+    gap: 1rem !important;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)) !important;
+    align-items: end !important;
+}
+
+/* Individual filter field */
+.fi-ta-filter {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.375rem !important;
+}
+
+/* Filter label */
+.fi-ta-filter label,
+.fi-fo-field-wrp-label label {
+    font-size: 0.8125rem !important;
+    font-weight: 600 !important;
+    color: #374151 !important;
+    white-space: nowrap !important;
+}
+.dark .fi-ta-filter label {
+    color: #a1a1aa !important;
+}
+
+/* Filter reset link */
+.fi-ta-filters-reset-btn {
+    font-size: 0.8125rem !important;
+    color: #6b7280 !important;
+    text-decoration: underline !important;
+    cursor: pointer !important;
+    background: none !important;
+    border: none !important;
+    padding: 0 !important;
+    transition: color 0.15s !important;
+}
+.fi-ta-filters-reset-btn:hover {
+    color: #10b981 !important;
+}
+.dark .fi-ta-filters-reset-btn {
+    color: #71717a !important;
+}
+
+/* Active filter indicator chips (shown in toolbar when filters active) */
+.fi-ta-filter-indicators {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 0.375rem !important;
+    padding: 0.5rem 1rem !important;
+    background-color: #fefce8 !important;
+    border-bottom: 1px solid #fef08a !important;
+    align-items: center !important;
+}
+.dark .fi-ta-filter-indicators {
+    background-color: rgba(234,179,8,0.06) !important;
+    border-bottom-color: rgba(234,179,8,0.15) !important;
+}
+
+.fi-ta-filter-indicator {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.375rem !important;
+    padding: 0.25rem 0.625rem !important;
+    border-radius: 9999px !important;
+    background-color: #fef9c3 !important;
+    border: 1px solid #fde047 !important;
+    font-size: 0.75rem !important;
+    font-weight: 600 !important;
+    color: #713f12 !important;
+}
+.dark .fi-ta-filter-indicator {
+    background-color: rgba(234,179,8,0.12) !important;
+    border-color: rgba(234,179,8,0.3) !important;
+    color: #fbbf24 !important;
+}
+
+.fi-ta-filter-indicator-remove-btn {
+    width: 1rem !important;
+    height: 1rem !important;
+    border-radius: 9999px !important;
+    background-color: #fde047 !important;
+    border: none !important;
+    cursor: pointer !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: #78350f !important;
+    transition: all 0.15s !important;
+    flex-shrink: 0 !important;
+}
+.fi-ta-filter-indicator-remove-btn:hover {
+    background-color: #ef4444 !important;
+    color: white !important;
+}
+.dark .fi-ta-filter-indicator-remove-btn {
+    background-color: rgba(234,179,8,0.25) !important;
+    color: #fbbf24 !important;
+}
+
+/* ----------------------------------------------------------------
+   11. PAGINATION — Full overhaul
+   ---------------------------------------------------------------- */
+.fi-pagination {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 0.75rem 1rem !important;
+    font-size: 0.8125rem !important;
+    background-color: #fafafa !important;
+    border-top: 1px solid #f3f4f6 !important;
+    gap: 0.5rem !important;
+    flex-wrap: wrap !important;
+}
+.dark .fi-pagination {
+    background-color: #1c1c1f !important;
+    border-top-color: rgba(255,255,255,0.05) !important;
+}
+
+/* "Showing X to Y of Z results" text */
+.fi-pagination-overview,
+.fi-pagination-item-label {
+    color: #6b7280 !important;
+    font-size: 0.8125rem !important;
+    font-weight: 500 !important;
+    white-space: nowrap !important;
+}
+.dark .fi-pagination-overview,
+.dark .fi-pagination-item-label {
+    color: #71717a !important;
+}
+
+/* The buttons list */
+.fi-pagination-items {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.25rem !important;
+    flex-wrap: nowrap !important;
+}
+
+/* Each page button/link */
+.fi-pagination-item button,
+.fi-pagination-item a,
+.fi-pagination-item span {
+    min-width: 2rem !important;
+    height: 2rem !important;
+    padding: 0 0.5rem !important;
+    border-radius: 0.375rem !important;
+    font-size: 0.8125rem !important;
+    font-weight: 500 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border: 1px solid #e5e7eb !important;
+    background-color: #ffffff !important;
+    color: #374151 !important;
+    transition: all 0.15s !important;
+    cursor: pointer !important;
+    text-decoration: none !important;
+    line-height: 1 !important;
+}
+
+/* Active / current page */
+.fi-pagination-item-is-active button,
+.fi-pagination-item-is-active a,
+[aria-current="page"] {
+    background-color: #10b981 !important;
+    border-color: #10b981 !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    box-shadow: 0 2px 8px rgba(16,185,129,0.35) !important;
+}
+
+/* Hover (non-active) */
+.fi-pagination-item button:hover:not([disabled]),
+.fi-pagination-item a:hover {
+    background-color: #ecfdf5 !important;
+    border-color: #10b981 !important;
+    color: #065f46 !important;
+}
+
+/* Disabled prev/next */
+.fi-pagination-item button:disabled,
+.fi-pagination-item button[disabled] {
+    opacity: 0.4 !important;
+    cursor: not-allowed !important;
+    pointer-events: none !important;
+}
+
+/* Ellipsis dots */
+.fi-pagination-item span[aria-disabled="true"],
+.fi-pagination-item-dots {
+    background: transparent !important;
+    border-color: transparent !important;
+    color: #9ca3af !important;
+    cursor: default !important;
+    pointer-events: none !important;
+}
+
+/* Dark mode pagination */
+.dark .fi-pagination-item button,
+.dark .fi-pagination-item a,
+.dark .fi-pagination-item span {
+    background-color: #27272a !important;
+    border-color: rgba(255,255,255,0.06) !important;
+    color: #f4f4f5 !important;
+}
+.dark .fi-pagination-item-is-active button,
+.dark .fi-pagination-item-is-active a,
+.dark [aria-current="page"] {
+    background-color: #10b981 !important;
+    border-color: #10b981 !important;
+    color: #ffffff !important;
+    box-shadow: 0 2px 8px rgba(16,185,129,0.25) !important;
+}
+.dark .fi-pagination-item button:hover:not([disabled]),
+.dark .fi-pagination-item a:hover {
+    background-color: rgba(16,185,129,0.12) !important;
+    border-color: #10b981 !important;
+    color: #34d399 !important;
+}
+.dark .fi-pagination-item button:disabled {
+    opacity: 0.35 !important;
+}
+.dark .fi-pagination-item-dots,
+.dark .fi-pagination-item span[aria-disabled="true"] {
+    background: transparent !important;
+    border-color: transparent !important;
+    color: #52525b !important;
+}
+
+/* Per-page select (Records per page dropdown) */
+.fi-pagination-records-per-page-select,
+.fi-ta-records-per-page-select,
+select[name="tableRecordsPerPage"] {
+    height: 2rem !important;
+    padding: 0 2rem 0 0.625rem !important;
+    border-radius: 0.375rem !important;
+    border: 1px solid #e5e7eb !important;
+    background-color: #ffffff !important;
+    color: #374151 !important;
+    font-size: 0.8125rem !important;
+    font-weight: 500 !important;
+    appearance: none !important;
+    cursor: pointer !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%236b7280'%3E%3Cpath fill-rule='evenodd' d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 011.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z' clip-rule='evenodd' /%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 0.5rem center !important;
+    background-size: 0.875rem !important;
+    transition: border-color 0.15s, box-shadow 0.15s !important;
+}
+.fi-pagination-records-per-page-select:focus,
+.fi-ta-records-per-page-select:focus,
+select[name="tableRecordsPerPage"]:focus {
+    outline: none !important;
+    border-color: #10b981 !important;
+    box-shadow: 0 0 0 3px rgba(16,185,129,0.12) !important;
+}
+.dark .fi-pagination-records-per-page-select,
+.dark .fi-ta-records-per-page-select,
+.dark select[name="tableRecordsPerPage"] {
+    background-color: #27272a !important;
+    border-color: rgba(255,255,255,0.08) !important;
+    color: #f4f4f5 !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%2371717a'%3E%3Cpath fill-rule='evenodd' d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 011.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z' clip-rule='evenodd' /%3E%3C/svg%3E") !important;
+}
+.dark .fi-pagination-records-per-page-select:focus,
+.dark .fi-ta-records-per-page-select:focus {
+    border-color: #10b981 !important;
+    box-shadow: 0 0 0 3px rgba(16,185,129,0.15) !important;
+}
+
+/* ----------------------------------------------------------------
+   12. TABS
+   ---------------------------------------------------------------- */
+.fi-tabs {
+    border-bottom: 1px solid #e5e7eb !important;
+    display: flex !important;
+    gap: 0 !important;
+    overflow-x: auto !important;
+    scrollbar-width: none !important;
+}
+.fi-tabs::-webkit-scrollbar {
+    display: none !important;
+}
+.dark .fi-tabs {
+    border-bottom-color: rgba(255,255,255,0.05) !important;
+}
+
+.fi-sc-tabs.fi-contained .fi-tabs {
+    gap: 0.5rem !important;
+    padding: 0.75rem !important;
+    flex-wrap: wrap !important;
+    overflow: visible !important;
+}
+
+.fi-sc-tabs.fi-contained .fi-tabs-item {
+    flex: 1 1 15rem !important;
+    min-width: min(100%, 15rem) !important;
+    min-height: 3rem !important;
+    justify-content: center !important;
+    text-align: center !important;
+    white-space: normal !important;
+    line-height: 1.25 !important;
+    padding: 0.75rem 1rem !important;
+    border-radius: 0.5rem !important;
+}
+
+.fi-sc-tabs.fi-contained .fi-tabs-item-label {
+    white-space: normal !important;
+    overflow-wrap: anywhere !important;
+}
+
+/* Individual tab button */
+.fi-tab {
+    padding: 0.75rem 1.125rem !important;
+    font-size: 0.875rem !important;
+    font-weight: 600 !important;
+    color: #6b7280 !important;
+    border-bottom: 2px solid transparent !important;
+    margin-bottom: -1px !important;
+    white-space: nowrap !important;
+    cursor: pointer !important;
+    transition: all 0.15s !important;
+    background: none !important;
+    border-top: none !important;
+    border-left: none !important;
+    border-right: none !important;
+    text-decoration: none !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+}
+.fi-tab:hover {
+    color: #374151 !important;
+    border-bottom-color: #d1d5db !important;
+}
+.dark .fi-tab {
+    color: #71717a !important;
+}
+.dark .fi-tab:hover {
+    color: #e4e4e7 !important;
+    border-bottom-color: rgba(255,255,255,0.1) !important;
+}
+
+/* Active tab */
+.fi-tab-is-active,
+.fi-tab[aria-selected="true"] {
+    color: #059669 !important;
+    border-bottom-color: #059669 !important;
+}
+.dark .fi-tab-is-active,
+.dark .fi-tab[aria-selected="true"] {
+    color: #10b981 !important;
+    border-bottom-color: #10b981 !important;
+}
+
+/* Tab badge (count indicator) */
+.fi-tab-badge {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-width: 1.25rem !important;
+    height: 1.25rem !important;
+    padding: 0 0.35rem !important;
+    border-radius: 9999px !important;
+    background-color: #f3f4f6 !important;
+    color: #374151 !important;
+    font-size: 0.6875rem !important;
+    font-weight: 700 !important;
+    line-height: 1 !important;
+}
+.fi-tab-is-active .fi-tab-badge,
+.fi-tab[aria-selected="true"] .fi-tab-badge {
+    background-color: #dcfce7 !important;
+    color: #065f46 !important;
+}
+.dark .fi-tab-badge {
+    background-color: #3f3f46 !important;
+    color: #a1a1aa !important;
+}
+.dark .fi-tab-is-active .fi-tab-badge {
+    background-color: rgba(16,185,129,0.15) !important;
+    color: #34d399 !important;
+}
+
+/* Tab panels content wrapper */
+.fi-tabs-content {
+    padding: 1.25rem !important;
+}
+
+/* ----------------------------------------------------------------
+   13. TOGGLES / SWITCHES
+   ---------------------------------------------------------------- */
+/* Toggle container */
+.fi-fo-toggle {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.625rem !important;
+}
+
+/* Toggle label */
+.fi-fo-toggle-label {
+    font-size: 0.875rem !important;
+    font-weight: 500 !important;
+    color: #374151 !important;
+    cursor: pointer !important;
+    user-select: none !important;
+}
+.dark .fi-fo-toggle-label {
+    color: #d4d4d8 !important;
+}
+
+/* The switch track */
+.fi-fo-toggle-input {
+    appearance: none !important;
+    width: 2.25rem !important;
+    height: 1.25rem !important;
+    border-radius: 9999px !important;
+    background-color: #d1d5db !important;
+    border: none !important;
+    position: relative !important;
+    cursor: pointer !important;
+    transition: background-color 0.2s !important;
+    flex-shrink: 0 !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    outline-offset: 2px !important;
+}
+.fi-fo-toggle-input::before {
+    content: '' !important;
+    position: absolute !important;
+    top: 0.125rem !important;
+    left: 0.125rem !important;
+    width: 1rem !important;
+    height: 1rem !important;
+    border-radius: 9999px !important;
+    background-color: #ffffff !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2) !important;
+    transition: transform 0.2s !important;
+}
+.fi-fo-toggle-input:checked {
+    background-color: #10b981 !important;
+}
+.fi-fo-toggle-input:checked::before {
+    transform: translateX(1rem) !important;
+}
+.fi-fo-toggle-input:focus-visible {
+    outline: 2px solid #10b981 !important;
+}
+.dark .fi-fo-toggle-input {
+    background-color: #3f3f46 !important;
+}
+.dark .fi-fo-toggle-input:checked {
+    background-color: #10b981 !important;
+}
+
+/* ----------------------------------------------------------------
+   14. CHECKBOXES
+   ---------------------------------------------------------------- */
+.fi-checkbox-input,
+input[type="checkbox"].fi-checkbox-input {
+    width: 1rem !important;
+    height: 1rem !important;
+    border-radius: 0.25rem !important;
+    border: 1.5px solid #d1d5db !important;
+    background-color: #ffffff !important;
+    cursor: pointer !important;
+    flex-shrink: 0 !important;
+    accent-color: #10b981;
+    transition: all 0.15s !important;
+    box-shadow: none !important;
+}
+.fi-checkbox-input:checked {
+    background-color: #10b981 !important;
+    border-color: #10b981 !important;
+}
+.dark .fi-checkbox-input {
+    background-color: #27272a !important;
+    border-color: rgba(255,255,255,0.15) !important;
+}
+.dark .fi-checkbox-input:checked {
+    background-color: #10b981 !important;
+    border-color: #10b981 !important;
+}
+
+/* ----------------------------------------------------------------
+   15. BADGES / STATUS CHIPS
+   ---------------------------------------------------------------- */
+.fi-badge {
+    display: inline-flex !important;
+    align-items: center !important;
+    padding: 0.2rem 0.6rem !important;
+    font-size: 0.6875rem !important;
+    font-weight: 700 !important;
+    border-radius: 9999px !important;
+    border-width: 1px !important;
+    border-style: solid !important;
+    line-height: 1.4 !important;
+    letter-spacing: 0.02em !important;
+    text-transform: uppercase !important;
+    white-space: nowrap !important;
+}
+
+/* Badge colors */
+.fi-badge-color-primary  { background-color: #dcfce7 !important; color: #065f46 !important; border-color: #a7f3d0 !important; }
+.fi-badge-color-success  { background-color: #dcfce7 !important; color: #065f46 !important; border-color: #a7f3d0 !important; }
+.fi-badge-color-danger   { background-color: #fee2e2 !important; color: #991b1b !important; border-color: #fca5a5 !important; }
+.fi-badge-color-warning  { background-color: #fef3c7 !important; color: #78350f !important; border-color: #fcd34d !important; }
+.fi-badge-color-info     { background-color: #dbeafe !important; color: #1e3a8a !important; border-color: #93c5fd !important; }
+.fi-badge-color-gray     { background-color: #f3f4f6 !important; color: #374151 !important; border-color: #e5e7eb !important; }
+
+.dark .fi-badge-color-primary  { background-color: rgba(16,185,129,0.12) !important; color: #34d399 !important; border-color: rgba(16,185,129,0.25) !important; }
+.dark .fi-badge-color-success  { background-color: rgba(16,185,129,0.12) !important; color: #34d399 !important; border-color: rgba(16,185,129,0.25) !important; }
+.dark .fi-badge-color-danger   { background-color: rgba(239,68,68,0.12) !important; color: #f87171 !important; border-color: rgba(239,68,68,0.25) !important; }
+.dark .fi-badge-color-warning  { background-color: rgba(245,158,11,0.12) !important; color: #fbbf24 !important; border-color: rgba(245,158,11,0.25) !important; }
+.dark .fi-badge-color-info     { background-color: rgba(59,130,246,0.12) !important; color: #60a5fa !important; border-color: rgba(59,130,246,0.25) !important; }
+.dark .fi-badge-color-gray     { background-color: #27272a !important; color: #a1a1aa !important; border-color: rgba(255,255,255,0.06) !important; }
+
+/* ----------------------------------------------------------------
+   16. NOTIFICATIONS
+   ---------------------------------------------------------------- */
+.fi-notifications {
+    z-index: 9999 !important;
+}
+.fi-notification {
+    border-radius: 0.75rem !important;
+    border: 1px solid #e5e7eb !important;
+    padding: 1rem !important;
+    font-size: 0.875rem !important;
+    line-height: 1.5 !important;
+    background: #ffffff !important;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08) !important;
+}
+.dark .fi-notification {
+    background-color: #27272a !important;
+    border-color: rgba(255,255,255,0.06) !important;
+    color: #f4f4f5 !important;
+}
+.fi-notification-title {
+    font-weight: 700 !important;
+    font-size: 0.875rem !important;
+    color: #111827 !important;
+}
+.dark .fi-notification-title {
+    color: #f4f4f5 !important;
+}
+.fi-notification-body {
+    font-size: 0.8125rem !important;
+    color: #6b7280 !important;
+    margin-top: 0.25rem !important;
+}
+.dark .fi-notification-body {
+    color: #a1a1aa !important;
+}
+
+/* ----------------------------------------------------------------
+   17. DROPDOWN MENUS
+   ---------------------------------------------------------------- */
+.fi-dropdown-panel {
+    border-radius: 0.625rem !important;
+    border: 1px solid #e5e7eb !important;
+    background-color: #ffffff !important;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08) !important;
+    padding: 0.375rem !important;
+    overflow: hidden !important;
+}
+.dark .fi-dropdown-panel {
+    background-color: #1c1c1f !important;
+    border-color: rgba(255,255,255,0.06) !important;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4) !important;
+}
+
+.fi-dropdown-list-item {
+    border-radius: 0.375rem !important;
+    transition: background-color 0.1s !important;
+}
+.fi-dropdown-list-item:hover {
+    background-color: #f3f4f6 !important;
+}
+.dark .fi-dropdown-list-item:hover {
+    background-color: rgba(255,255,255,0.05) !important;
+}
+
+.fi-dropdown-list-item button,
+.fi-dropdown-list-item a {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.625rem !important;
+    padding: 0.5rem 0.75rem !important;
+    font-size: 0.875rem !important;
+    font-weight: 500 !important;
+    color: #374151 !important;
+    width: 100% !important;
+    text-align: left !important;
+    text-decoration: none !important;
+    background: none !important;
+    border: none !important;
+    cursor: pointer !important;
+}
+.dark .fi-dropdown-list-item button,
+.dark .fi-dropdown-list-item a {
+    color: #e4e4e7 !important;
+}
+.fi-dropdown-list-item-color-danger button,
+.fi-dropdown-list-item-color-danger a {
+    color: #dc2626 !important;
+}
+.dark .fi-dropdown-list-item-color-danger button,
+.dark .fi-dropdown-list-item-color-danger a {
+    color: #f87171 !important;
+}
+
+/* ----------------------------------------------------------------
+   18. BREADCRUMBS
+   ---------------------------------------------------------------- */
+.fi-breadcrumbs {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.375rem !important;
+    font-size: 0.8125rem !important;
+    flex-wrap: wrap !important;
+}
+.fi-breadcrumbs-item-label,
+.fi-breadcrumbs-item a {
+    color: #6b7280 !important;
+    text-decoration: none !important;
+    transition: color 0.15s !important;
+}
+.fi-breadcrumbs-item a:hover {
+    color: #10b981 !important;
+}
+.fi-breadcrumbs-separator {
+    color: #d1d5db !important;
+}
+.dark .fi-breadcrumbs-item-label,
+.dark .fi-breadcrumbs-item a {
+    color: #71717a !important;
+}
+.dark .fi-breadcrumbs-item a:hover {
+    color: #10b981 !important;
+}
+.dark .fi-breadcrumbs-separator {
+    color: #3f3f46 !important;
+}
+
+/* ----------------------------------------------------------------
+   19. TABLE RECORD ACTIONS (inline row actions)
+   ---------------------------------------------------------------- */
+.fi-ta-record-action {
+    transition: all 0.15s !important;
+}
+.fi-ta-row-actions {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.25rem !important;
+    justify-content: flex-end !important;
+}
+
+/* ----------------------------------------------------------------
+   20. DARK MODE OVERRIDES (global catch-all)
+   ---------------------------------------------------------------- */
+.dark .fi-section,
+.dark .fi-ta-ctn,
+.dark .fi-card,
+.dark .fi-modal-window,
+.dark .fi-ta-record-action,
+.dark .fi-ta-row,
+.dark .fi-ta-empty-state,
+.dark .fi-ta-selection-indicator {
+    background-color: #18181b !important;
+    border-color: rgba(255, 255, 255, 0.05) !important;
+    box-shadow: none !important;
+}
+
+.dark .fi-ta-cell,
+.dark .fi-ta-text-item {
+    color: #e4e4e7 !important;
+}
+
+.dark th,
+.dark thead,
+.dark thead tr,
+.dark .fi-ta-header-cell {
+    background-color: #1c1c1f !important;
+    background: #1c1c1f !important;
+    border-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+.dark .fi-input-wrp {
+    background-color: #09090b !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    color: white !important;
+}
+
+.dark .fi-input-wrp input,
+.dark .fi-select-wrp select,
+.dark .fi-input-wrp textarea {
+    background-color: transparent !important;
+    color: white !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* Link colors in dark mode */
+.dark .fi-link.fi-color-primary { color: #34d399 !important; }
+.dark .fi-link.fi-color-danger  { color: #f87171 !important; }
+.dark .fi-link.fi-color-success { color: #34d399 !important; }
+.dark .fi-link.fi-color-warning { color: #fbbf24 !important; }
+.dark .fi-link.fi-color-primary:hover { color: #10b981 !important; }
+.dark .fi-link.fi-color-danger:hover  { color: #ef4444 !important; }
+.dark .fi-link.fi-color-success:hover { color: #10b981 !important; }
+
+/* Primary button high-contrast */
+.fi-btn.fi-color-primary {
+    background-color: #059669 !important;
+    color: #ffffff !important;
+}
+.fi-btn.fi-color-primary:hover {
+    background-color: #047857 !important;
+}
+
+/* ================================================================
+   CREATE / EDIT FORM — Comprehensive field polish (Filament v4)
+   Targets correct v4 class names from field-wrapper.blade.php
+   ================================================================ */
+
+/* Page card wrapper */
+.fi-resource-create-page,
+.fi-resource-edit-page {
+    max-width: 56rem !important;
+    margin: 0 auto !important;
+}
+
+/* ----------------------------------------------------------------
+   FORM CONTAINER
+   ---------------------------------------------------------------- */
+/* The outer form container — white card with rounded corners */
+.fi-form {
+    background-color: transparent !important;
+}
+
+/* Schema grid: the flex/grid that lays fields in columns */
+.fi-fo-grid,
+[class*="fi-fo-grid"] {
+    gap: 1.25rem !important;
+}
+
+/* ----------------------------------------------------------------
+   EACH FIELD WRAPPER  (.fi-fo-field)
+   ---------------------------------------------------------------- */
+.fi-fo-field {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.375rem !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+/* Inline label layout (label beside input) */
+.fi-fo-field.fi-fo-field-has-inline-label {
+    flex-direction: row !important;
+    align-items: flex-start !important;
+    gap: 1rem !important;
+}
+.fi-fo-field.fi-fo-field-has-inline-label .fi-fo-field-label-col {
+    width: 10rem !important;
+    flex-shrink: 0 !important;
+    padding-top: 0.5rem !important;
+}
+.fi-fo-field.fi-fo-field-has-inline-label .fi-fo-field-content-col {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+}
+
+/* ----------------------------------------------------------------
+   LABELS  (.fi-fo-field-label)
+   ---------------------------------------------------------------- */
+.fi-fo-field-label {
+    display: block !important;
+    font-size: 0.8125rem !important;
+    font-weight: 600 !important;
+    color: #374151 !important;
+    line-height: 1.4 !important;
+    letter-spacing: 0.01em !important;
+    margin-bottom: 0 !important;
+    cursor: default !important;
+}
+.dark .fi-fo-field-label {
+    color: #d4d4d8 !important;
+}
+
+/* Label text span */
+.fi-fo-field-label-content {
+    font-size: 0.8125rem !important;
+    font-weight: 600 !important;
+    color: inherit !important;
+}
+
+/* Required asterisk */
+.fi-fo-field-label-required-mark {
+    color: #ef4444 !important;
+    font-size: 0.75rem !important;
+    margin-left: 0.15rem !important;
+    font-weight: 700 !important;
+    vertical-align: super !important;
+    line-height: 1 !important;
+}
+
+/* ----------------------------------------------------------------
+   CONTENT COLUMN (wraps the input)
+   ---------------------------------------------------------------- */
+.fi-fo-field-content-col {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.25rem !important;
+    width: 100% !important;
+    min-width: 0 !important;
+}
+
+/* ----------------------------------------------------------------
+   INPUT WRAPPER  (.fi-input-wrp)
+   Already defined above but we tighten form-specific defaults
+   ---------------------------------------------------------------- */
+.fi-fo-text-input .fi-input-wrp,
+.fi-fo-field-content-col .fi-input-wrp {
+    width: 100% !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    align-items: center !important;
+    border-radius: 0.5rem !important;
+    border: 1.5px solid #d1d5db !important;
+    background-color: #ffffff !important;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease !important;
+    overflow: hidden !important;
+}
+.fi-fo-text-input .fi-input-wrp:focus-within,
+.fi-fo-field-content-col .fi-input-wrp:focus-within {
+    border-color: #10b981 !important;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15) !important;
+    background-color: #f9fffe !important;
+}
+.dark .fi-fo-text-input .fi-input-wrp,
+.dark .fi-fo-field-content-col .fi-input-wrp {
+    background-color: #111113 !important;
+    border-color: rgba(255,255,255,0.12) !important;
+}
+.dark .fi-fo-text-input .fi-input-wrp:focus-within,
+.dark .fi-fo-field-content-col .fi-input-wrp:focus-within {
+    border-color: #10b981 !important;
+    box-shadow: 0 0 0 3px rgba(16,185,129,0.15) !important;
+    background-color: rgba(16,185,129,0.04) !important;
+}
+
+/* Invalid / error state */
+.fi-fo-field-content-col .fi-input-wrp[data-invalid],
+.fi-fo-text-input .fi-input-wrp[data-invalid] {
+    border-color: #ef4444 !important;
+    box-shadow: 0 0 0 3px rgba(239,68,68,0.1) !important;
+}
+
+/* The <input> element itself */
+.fi-fo-field-content-col .fi-input,
+.fi-fo-text-input .fi-input,
+.fi-fo-field-content-col input.fi-input,
+.fi-fo-field-content-col textarea.fi-input {
+    flex: 1 1 0% !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 2.5rem !important;
+    padding: 0 0.875rem !important;
+    font-size: 0.875rem !important;
+    font-weight: 400 !important;
+    color: #111827 !important;
+    background: transparent !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    line-height: 1.5 !important;
+}
+.dark .fi-fo-field-content-col .fi-input,
+.dark .fi-fo-text-input .fi-input,
+.dark .fi-fo-field-content-col input.fi-input {
+    color: #f4f4f5 !important;
+}
+
+/* Placeholder */
+.fi-fo-field-content-col .fi-input::placeholder,
+.fi-fo-text-input .fi-input::placeholder {
+    color: #9ca3af !important;
+    font-weight: 400 !important;
+}
+.dark .fi-fo-field-content-col .fi-input::placeholder,
+.dark .fi-fo-text-input .fi-input::placeholder {
+    color: #52525b !important;
+}
+
+/* Prefix/suffix label text inside the input box */
+.fi-input-wrp-label-prefix,
+.fi-input-wrp-label-suffix {
+    display: flex !important;
+    align-items: center !important;
+    padding: 0 0.625rem !important;
+    font-size: 0.8125rem !important;
+    font-weight: 600 !important;
+    color: #6b7280 !important;
+    background-color: #f3f4f6 !important;
+    border-right: 1.5px solid #e5e7eb !important;
+    height: 100% !important;
+    align-self: stretch !important;
+    white-space: nowrap !important;
+    user-select: none !important;
+}
+.fi-input-wrp-label-suffix {
+    border-right: none !important;
+    border-left: 1.5px solid #e5e7eb !important;
+}
+.dark .fi-input-wrp-label-prefix,
+.dark .fi-input-wrp-label-suffix {
+    background-color: #1c1c1f !important;
+    color: #71717a !important;
+    border-color: rgba(255,255,255,0.08) !important;
+}
+
+/* Prefix/suffix icon */
+.fi-input-wrp-prefix,
+.fi-input-wrp-suffix {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 0.625rem !important;
+    color: #9ca3af !important;
+    flex-shrink: 0 !important;
+}
+.dark .fi-input-wrp-prefix,
+.dark .fi-input-wrp-suffix {
+    color: #52525b !important;
+}
+
+/* ----------------------------------------------------------------
+   TEXTAREA
+   ---------------------------------------------------------------- */
+.fi-fo-field-content-col textarea.fi-input {
+    height: auto !important;
+    min-height: 6rem !important;
+    padding: 0.625rem 0.875rem !important;
+    resize: vertical !important;
+    line-height: 1.6 !important;
+}
+
+/* ----------------------------------------------------------------
+   SELECT (Filament custom select — uses .fi-select-wrp)
+   ---------------------------------------------------------------- */
+.fi-fo-field-content-col .fi-fo-select,
+.fi-fo-field-content-col .fi-input-wrp-content-ctn,
+.fi-fo-field-content-col .fi-select-input {
+    width: 100% !important;
+    min-width: 0 !important;
+}
+
+.fi-fo-field-content-col .fi-fo-select {
+    overflow: visible !important;
+}
+
+.fi-fo-select-wrp:focus-within,
+.fi-sc-component:has(.fi-dropdown-panel[style*="display: block"]),
+.fi-sc-component:has(.fi-dropdown-panel:not([style*="display: none"])) {
+    position: relative !important;
+    z-index: 1000 !important;
+}
+
+.fi-fo-field-content-col .fi-select-input,
+.fi-fo-field-content-col .fi-select-input-ctn {
+    position: relative !important;
+    z-index: auto !important;
+}
+
+.fi-fo-select-wrp:focus-within .fi-select-input,
+.fi-fo-select-wrp:focus-within .fi-select-input-ctn {
+    z-index: 1001 !important;
+}
+
+.fi-fo-field-content-col .fi-select-input-btn {
+    width: 100% !important;
+    justify-content: space-between !important;
+}
+
+.fi-fo-field-content-col .fi-select-input .fi-dropdown-panel {
+    width: 100% !important;
+    min-width: min(22rem, calc(100vw - 2rem)) !important;
+    max-width: calc(100vw - 2rem) !important;
+    z-index: 1002 !important;
+    isolation: isolate !important;
+    opacity: 1 !important;
+    backdrop-filter: none !important;
+    border: 1px solid rgba(16, 185, 129, 0.35) !important;
+    border-radius: 0.5rem !important;
+    background-color: #ffffff !important;
+    box-shadow: 0 18px 45px rgba(15, 23, 42, 0.16) !important;
+}
+
+.fi-fo-field-content-col .fi-select-input .fi-select-input-search-ctn {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 2 !important;
+    padding: 0.375rem 0.5rem 0.5rem !important;
+    background-color: #ffffff !important;
+    opacity: 1 !important;
+    backdrop-filter: none !important;
+    border-bottom: 1px solid #e5e7eb !important;
+}
+
+.fi-fo-field-content-col .fi-select-input .fi-select-input-search-ctn .fi-input {
+    width: 100% !important;
+    min-height: 2.25rem !important;
+    padding: 0 0.75rem !important;
+    background-color: #f9fafb !important;
+    border-radius: 0.375rem !important;
+}
+
+.fi-fo-field-content-col .fi-select-input .fi-dropdown-list {
+    position: relative !important;
+    z-index: 1 !important;
+    width: 100% !important;
+    background-color: #ffffff !important;
+    opacity: 1 !important;
+    backdrop-filter: none !important;
+    padding: 0.375rem 0.25rem !important;
+}
+
+.fi-fo-field-content-col .fi-select-input .fi-dropdown-list-item {
+    min-height: 2.375rem !important;
+    width: 100% !important;
+    padding: 0.5rem 0.75rem !important;
+    align-items: center !important;
+    background-color: #ffffff !important;
+    opacity: 1 !important;
+}
+
+.dark .fi-fo-field-content-col .fi-select-input .fi-dropdown-panel {
+    border-color: rgba(16, 185, 129, 0.38) !important;
+    background-color: #18181b !important;
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.45) !important;
+}
+
+.dark .fi-fo-field-content-col .fi-select-input .fi-select-input-search-ctn {
+    background-color: #18181b !important;
+    border-bottom-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.dark .fi-fo-field-content-col .fi-select-input .fi-select-input-search-ctn .fi-input {
+    background-color: #111113 !important;
+}
+
+.dark .fi-fo-field-content-col .fi-select-input .fi-dropdown-list,
+.dark .fi-fo-field-content-col .fi-select-input .fi-dropdown-list-item {
+    background-color: #18181b !important;
+}
+
+.fi-fo-field-content-col .fi-select-wrp {
+    width: 100% !important;
+    border-radius: 0.5rem !important;
+    border: 1.5px solid #d1d5db !important;
+    background-color: #ffffff !important;
+    min-height: 2.5rem !important;
+    transition: border-color 0.18s, box-shadow 0.18s !important;
+}
+.fi-fo-field-content-col .fi-select-wrp:focus-within {
+    border-color: #10b981 !important;
+    box-shadow: 0 0 0 3px rgba(16,185,129,0.15) !important;
+}
+.dark .fi-fo-field-content-col .fi-select-wrp {
+    background-color: #111113 !important;
+    border-color: rgba(255,255,255,0.12) !important;
+}
+.dark .fi-fo-field-content-col .fi-select-wrp:focus-within {
+    border-color: #10b981 !important;
+}
+
+/* ----------------------------------------------------------------
+   DATE PICKER — the trigger button looks like an input
+   ---------------------------------------------------------------- */
+.fi-fo-date-time-picker .fi-input-wrp {
+    min-height: 2.5rem !important;
+    cursor: pointer !important;
+}
+.fi-fo-date-time-picker .fi-input-wrp input[readonly] {
+    cursor: pointer !important;
+}
+
+/* ----------------------------------------------------------------
+   FILE UPLOAD / IMAGE UPLOAD
+   ---------------------------------------------------------------- */
+.fi-fo-file-upload {
+    width: 100% !important;
+}
+.fi-fo-file-upload .fi-fo-file-upload-ctn {
+    border: 2px dashed #d1d5db !important;
+    border-radius: 0.75rem !important;
+    padding: 1.5rem 1rem !important;
+    text-align: center !important;
+    background-color: #f9fafb !important;
+    transition: all 0.15s !important;
+    cursor: pointer !important;
+}
+.fi-fo-file-upload .fi-fo-file-upload-ctn:hover {
+    border-color: #10b981 !important;
+    background-color: #f0fdf4 !important;
+}
+.dark .fi-fo-file-upload .fi-fo-file-upload-ctn {
+    border-color: rgba(255,255,255,0.1) !important;
+    background-color: #111113 !important;
+}
+.dark .fi-fo-file-upload .fi-fo-file-upload-ctn:hover {
+    border-color: #10b981 !important;
+    background-color: rgba(16,185,129,0.05) !important;
+}
+
+/* ----------------------------------------------------------------
+   HELPER TEXT (below input)
+   ---------------------------------------------------------------- */
+.fi-fo-field-hint,
+.fi-fo-field-helper-text,
+[class*="fi-fo-field-hint"],
+p.fi-fo-field-hint {
+    font-size: 0.75rem !important;
+    color: #6b7280 !important;
+    line-height: 1.5 !important;
+    margin-top: 0.125rem !important;
+}
+.dark .fi-fo-field-hint,
+.dark .fi-fo-field-helper-text,
+.dark p.fi-fo-field-hint {
+    color: #71717a !important;
+}
+
+/* ----------------------------------------------------------------
+   VALIDATION ERROR MESSAGES
+   ---------------------------------------------------------------- */
+.fi-fo-field-wrp-error-message,
+p.fi-fo-field-wrp-error-message,
+.fi-fo-field-wrp-error-list {
+    font-size: 0.75rem !important;
+    color: #ef4444 !important;
+    font-weight: 500 !important;
+    line-height: 1.5 !important;
+    margin-top: 0.125rem !important;
+    display: flex !important;
+    align-items: flex-start !important;
+    gap: 0.25rem !important;
+}
+.dark .fi-fo-field-wrp-error-message,
+.dark p.fi-fo-field-wrp-error-message {
+    color: #f87171 !important;
+}
+
+/* ----------------------------------------------------------------
+   FORM SECTION CARD (the white card that groups fields)
+   ---------------------------------------------------------------- */
+.fi-section {
+    border-radius: 0.875rem !important;
+    border: 1px solid #e5e7eb !important;
+    background-color: #ffffff !important;
+    overflow: hidden !important;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04) !important;
+}
+.dark .fi-section {
+    background-color: #18181b !important;
+    border-color: rgba(255,255,255,0.07) !important;
+    box-shadow: none !important;
+}
+
+/* Section heading bar */
+.fi-section-header-ctn {
+    padding: 1rem 1.25rem !important;
+    border-bottom: 1px solid #f3f4f6 !important;
+    background-color: #fafafa !important;
+}
+.dark .fi-section-header-ctn {
+    background-color: #1c1c1f !important;
+    border-bottom-color: rgba(255,255,255,0.05) !important;
+}
+
+.fi-section-heading {
+    font-size: 0.9375rem !important;
+    font-weight: 700 !important;
+    color: #111827 !important;
+    line-height: 1.4 !important;
+}
+.dark .fi-section-heading {
+    color: #f4f4f5 !important;
+}
+
+.fi-section-description {
+    font-size: 0.8125rem !important;
+    color: #6b7280 !important;
+    margin-top: 0.125rem !important;
+}
+.dark .fi-section-description {
+    color: #71717a !important;
+}
+
+/* Section body */
+.fi-section-content-ctn {
+    padding: 1.25rem !important;
+}
+
+/* Grid inside section: consistent gap */
+.fi-section-content-ctn .fi-fo-grid,
+.fi-section-content-ctn [class*="grid"] {
+    gap: 1.125rem !important;
+}
+
+/* ----------------------------------------------------------------
+   FORM ACTION BUTTONS BAR (Save / Cancel at bottom)
+   ---------------------------------------------------------------- */
+.fi-form-actions {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.75rem !important;
+    padding: 1rem 1.25rem !important;
+    background-color: #fafafa !important;
+    border-top: 1px solid #f3f4f6 !important;
+    justify-content: flex-end !important;
+    border-radius: 0 0 0.875rem 0.875rem !important;
+    flex-wrap: wrap !important;
+}
+.dark .fi-form-actions {
+    background-color: #1c1c1f !important;
+    border-top-color: rgba(255,255,255,0.05) !important;
+}
+
+/* Save button */
+.fi-form-actions .fi-btn.fi-color-primary {
+    min-width: 8rem !important;
+    height: 2.375rem !important;
+    font-size: 0.875rem !important;
+    font-weight: 700 !important;
+}
+
+/* ----------------------------------------------------------------
+   FIELDSET (groups of fields with a legend)
+   ---------------------------------------------------------------- */
+.fi-fo-fieldset {
+    border: 1px solid #e5e7eb !important;
+    border-radius: 0.625rem !important;
+    padding: 1rem !important;
+    background-color: #fafafa !important;
+}
+.dark .fi-fo-fieldset {
+    border-color: rgba(255,255,255,0.06) !important;
+    background-color: #1c1c1f !important;
+}
+.fi-fo-fieldset legend {
+    font-size: 0.8125rem !important;
+    font-weight: 700 !important;
+    color: #374151 !important;
+    padding: 0 0.375rem !important;
+    letter-spacing: 0.02em !important;
+    text-transform: uppercase !important;
+}
+.dark .fi-fo-fieldset legend {
+    color: #a1a1aa !important;
+}
+
+/* ----------------------------------------------------------------
+   DISABLED STATE
+   ---------------------------------------------------------------- */
+.fi-fo-field-content-col .fi-input-wrp[data-disabled],
+.fi-fo-text-input .fi-input-wrp[data-disabled] {
+    opacity: 0.6 !important;
+    cursor: not-allowed !important;
+    background-color: #f9fafb !important;
+}
+.dark .fi-fo-field-content-col .fi-input-wrp[data-disabled] {
+    background-color: #09090b !important;
+}
+.fi-fo-field-content-col .fi-input[disabled],
+.fi-fo-field-content-col input[disabled] {
+    cursor: not-allowed !important;
+    color: #9ca3af !important;
+}
+
+/* ----------------------------------------------------------------
+   STOCK ADJUSTMENTS / FILAMENT ANTI-COLLAPSE FIX
+   Keeps table, filter, modal, and form containers from compressing.
+   ---------------------------------------------------------------- */
+.fi-page,
+.fi-main,
+.fi-page-content,
+.fi-resource-list-records-page,
+.fi-resource-manage-records-page {
+    min-width: 0 !important;
+}
+
+.fi-ta,
+.fi-ta-ctn,
+.fi-section,
+.fi-modal-window {
+    min-height: auto !important;
+}
+
+.fi-ta-ctn,
+.fi-section {
+    overflow: visible !important;
+}
+
+.fi-ta-content,
+.fi-ta-table-ctn,
+.fi-ta-table {
+    width: 100% !important;
+    min-width: 100% !important;
+}
+
+.fi-ta-table-ctn,
+.fi-ta-content {
+    overflow-x: auto !important;
+    overflow-y: visible !important;
+}
+
+.fi-ta-header-toolbar {
+    min-height: 3.5rem !important;
+    height: auto !important;
+    align-items: center !important;
+}
+
+.fi-ta-header-toolbar,
+.fi-ta-header-toolbar > *,
+.fi-ta-actions,
+.fi-ta-filters-ctn,
+.fi-ta-filters-layout {
+    min-width: 0 !important;
+}
+
+.fi-ta-filters-ctn,
+.fi-modal-content,
+.fi-section-content,
+.fi-section-content-ctn {
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+}
+
+.fi-modal-content {
+    min-height: 0 !important;
+}
+
+.fi-fo-field-wrp,
+.fi-fo-field,
+.fi-fo-field-content-col,
+.fi-fo-component-ctn {
+    min-height: max-content !important;
+    height: auto !important;
+    overflow: visible !important;
+}
+
+.fi-fo-field-wrp-label,
+.fi-fo-field-label,
+.fi-fo-field-hint,
+.fi-fo-field-helper-text,
+.fi-fo-field-wrp-error-message {
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+}
+
+.fi-input-wrp,
+.fi-select-wrp {
+    min-height: 2.5rem !important;
+    height: auto !important;
+}
+
+.fi-input-wrp input,
+.fi-select-wrp select {
+    min-height: 2.5rem !important;
+}
+
+.fi-dropdown-panel {
+    max-height: min(28rem, calc(100vh - 6rem)) !important;
+    overflow-y: auto !important;
+}
+
+/* ----------------------------------------------------------------
+   PAGINATION FOOTER FIX
+   Normalizes Filament table pagination so controls do not collapse.
+   ---------------------------------------------------------------- */
+.fi-pagination,
+.fi-ta-pagination,
+.fi-ta-footer {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 1rem !important;
+    flex-wrap: wrap !important;
+    min-height: 4rem !important;
+    height: auto !important;
+    padding: 0.875rem 1rem !important;
+    overflow: visible !important;
+}
+
+.fi-pagination > *,
+.fi-ta-pagination > *,
+.fi-ta-footer > * {
+    min-width: 0 !important;
+}
+
+.fi-pagination-overview {
+    flex: 1 1 14rem !important;
+    min-width: 14rem !important;
+    margin: 0 !important;
+    white-space: nowrap !important;
+}
+
+.fi-pagination-records-per-page,
+.fi-ta-records-per-page,
+.fi-pagination-records-per-page-select-ctn,
+.fi-ta-records-per-page-select-ctn {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    height: 2.5rem !important;
+    min-height: 2.5rem !important;
+    overflow: visible !important;
+}
+
+.fi-pagination-records-per-page .fi-input-wrp,
+.fi-ta-records-per-page .fi-input-wrp,
+.fi-pagination-records-per-page .fi-select-wrp,
+.fi-ta-records-per-page .fi-select-wrp,
+.fi-pagination-records-per-page-select,
+.fi-ta-records-per-page-select,
+select[name="tableRecordsPerPage"] {
+    width: auto !important;
+    min-width: 5rem !important;
+    height: 2.5rem !important;
+    min-height: 2.5rem !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+}
+
+.fi-pagination-records-per-page select,
+.fi-ta-records-per-page select,
+select[name="tableRecordsPerPage"] {
+    line-height: 1.25rem !important;
+    padding: 0 2rem 0 0.75rem !important;
+    display: block !important;
+}
+
+.fi-pagination-items,
+.fi-pagination-links,
+nav[role="navigation"] .fi-pagination-items {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.375rem !important;
+    flex: 0 1 auto !important;
+    flex-wrap: wrap !important;
+    justify-content: flex-end !important;
+}
+
+.fi-pagination-item {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: auto !important;
+    min-width: 2.5rem !important;
+    height: 2.5rem !important;
+    min-height: 2.5rem !important;
+    margin: 0 !important;
+}
+
+.fi-pagination-item button,
+.fi-pagination-item a,
+.fi-pagination-item span {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-width: 2.5rem !important;
+    width: auto !important;
+    height: 2.5rem !important;
+    min-height: 2.5rem !important;
+    padding: 0 0.875rem !important;
+    margin: 0 !important;
+    border-radius: 0.5rem !important;
+    line-height: 1 !important;
+}
+
+.fi-pagination-item-dots,
+.fi-pagination-item span[aria-disabled="true"] {
+    min-width: 2.5rem !important;
+    padding: 0 0.75rem !important;
+}
+
+@media (max-width: 768px) {
+    .fi-pagination,
+    .fi-ta-pagination,
+    .fi-ta-footer {
+        align-items: flex-start !important;
+        justify-content: flex-start !important;
+    }
+
+    .fi-pagination-overview {
+        flex-basis: 100% !important;
+    }
+
+    .fi-pagination-items,
+    .fi-pagination-links {
+        justify-content: flex-start !important;
+    }
+}
+
+/* ----------------------------------------------------------------
+   POLISHED TABLE PAGINATION
+   Cleaner footer controls for large product/customer tables.
+   ---------------------------------------------------------------- */
+.fi-ta-footer,
+.fi-ta-pagination,
+.fi-pagination {
+    background: transparent !important;
+    border-top: 1px solid rgba(148, 163, 184, 0.14) !important;
+    padding: 1rem 1.25rem !important;
+    gap: 0.875rem !important;
+    min-height: 4.5rem !important;
+}
+
+.fi-pagination-overview {
+    color: rgb(148, 163, 184) !important;
+    font-size: 0.875rem !important;
+    font-weight: 500 !important;
+}
+
+.fi-pagination-records-per-page,
+.fi-ta-records-per-page {
+    background: rgba(15, 23, 42, 0.72) !important;
+    border: 1px solid rgba(148, 163, 184, 0.18) !important;
+    border-radius: 0.75rem !important;
+    box-shadow: none !important;
+    padding: 0.25rem !important;
+    height: 2.75rem !important;
+    min-height: 2.75rem !important;
+}
+
+.fi-pagination-records-per-page label,
+.fi-ta-records-per-page label {
+    color: rgb(148, 163, 184) !important;
+    font-size: 0.8125rem !important;
+    font-weight: 600 !important;
+    padding-inline-start: 0.75rem !important;
+}
+
+.fi-pagination-records-per-page .fi-input-wrp,
+.fi-ta-records-per-page .fi-input-wrp,
+.fi-pagination-records-per-page .fi-select-wrp,
+.fi-ta-records-per-page .fi-select-wrp,
+.fi-pagination-records-per-page-select,
+.fi-ta-records-per-page-select,
+select[name="tableRecordsPerPage"] {
+    background: rgb(2, 6, 23) !important;
+    border: 1px solid rgba(148, 163, 184, 0.18) !important;
+    border-radius: 0.625rem !important;
+    box-shadow: none !important;
+    min-width: 5rem !important;
+}
+
+.fi-pagination-items,
+.fi-pagination-links,
+nav[role="navigation"] .fi-pagination-items {
+    background: transparent !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    gap: 0.375rem !important;
+    padding: 0 !important;
+}
+
+.fi-pagination-item {
+    min-width: 2.25rem !important;
+    height: 2.25rem !important;
+    min-height: 2.25rem !important;
+}
+
+.fi-pagination-item button,
+.fi-pagination-item a,
+.fi-pagination-item span {
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    color: rgb(203, 213, 225) !important;
+    font-size: 0.875rem !important;
+    font-weight: 700 !important;
+    height: 2.25rem !important;
+    min-height: 2.25rem !important;
+    min-width: 2.25rem !important;
+    padding: 0 0.75rem !important;
+    border-radius: 0.625rem !important;
+}
+
+.fi-pagination-item button:hover:not([disabled]),
+.fi-pagination-item a:hover {
+    background: rgba(148, 163, 184, 0.12) !important;
+    color: rgb(255, 255, 255) !important;
+}
+
+.fi-pagination-item-is-active button,
+.fi-pagination-item-is-active a,
+.fi-pagination-item [aria-current="page"] {
+    background: transparent !important;
+    color: rgb(52, 211, 153) !important;
+    text-decoration: underline !important;
+    text-underline-offset: 0.35rem !important;
+}
+
+/* Hide the page-number navigation section completely. */
+.fi-pagination-items,
+.fi-pagination-links,
+nav[role="navigation"] .fi-pagination-items {
+    display: none !important;
+}
+
+/* Hide per-page controls and previous/next pagination actions. */
+.fi-pagination-records-per-page,
+.fi-ta-records-per-page,
+.fi-pagination-records-per-page-select-ctn,
+.fi-ta-records-per-page-select-ctn,
+.fi-pagination-previous,
+.fi-pagination-next,
+.fi-pagination-item-previous,
+.fi-pagination-item-next {
+    display: none !important;
+}
+
+.fi-ta-footer,
+.fi-ta-pagination,
+.fi-pagination {
+    justify-content: flex-start !important;
+    min-height: 3rem !important;
+}
+
+.fi-pagination-item button:disabled,
+.fi-pagination-item button[disabled],
+.fi-pagination-item span[aria-disabled="true"],
+.fi-pagination-item-dots {
+    color: rgb(100, 116, 139) !important;
+    opacity: 1 !important;
+}
+
+@media (max-width: 768px) {
+    .fi-pagination-records-per-page,
+    .fi-ta-records-per-page,
+    .fi-pagination-items,
+    .fi-pagination-links {
+        width: 100% !important;
+    }
+
+    .fi-pagination-items,
+    .fi-pagination-links {
+        justify-content: center !important;
+    }
+}
+
+/* ----------------------------------------------------------------
+   MODERN SIMPLE TABLE NAVIGATION
+   Replaces the old number strip with clean per-page + previous/next.
+   ---------------------------------------------------------------- */
+.fi-ta-footer,
+.fi-ta-pagination,
+.fi-pagination {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 1rem !important;
+    min-height: 4.25rem !important;
+    padding: 1rem 1.25rem !important;
+}
+
+.fi-pagination-records-per-page,
+.fi-ta-records-per-page,
+.fi-pagination-records-per-page-select-ctn,
+.fi-ta-records-per-page-select-ctn {
+    display: inline-flex !important;
+}
+
+.fi-pagination-items,
+.fi-pagination-links,
+nav[role="navigation"] .fi-pagination-items {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 0.5rem !important;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+}
+
+.fi-pagination-item {
+    display: inline-flex !important;
+}
+
+.fi-pagination-previous,
+.fi-pagination-next,
+.fi-pagination-item-previous,
+.fi-pagination-item-next,
+.fi-pagination-items > :first-child,
+.fi-pagination-items > :last-child,
+.fi-pagination-links > :first-child,
+.fi-pagination-links > :last-child {
+    display: inline-flex !important;
+}
+
+.fi-pagination-previous button,
+.fi-pagination-next button,
+.fi-pagination-item-previous button,
+.fi-pagination-item-next button,
+.fi-pagination-items > :first-child button,
+.fi-pagination-items > :last-child button,
+.fi-pagination-links > :first-child button,
+.fi-pagination-links > :last-child button,
+.fi-pagination-previous a,
+.fi-pagination-next a,
+.fi-pagination-item-previous a,
+.fi-pagination-item-next a,
+.fi-pagination-items > :first-child a,
+.fi-pagination-items > :last-child a,
+.fi-pagination-links > :first-child a,
+.fi-pagination-links > :last-child a {
+    min-width: 6.5rem !important;
+    height: 2.5rem !important;
+    border-radius: 999px !important;
+    border: 1px solid rgba(52, 211, 153, 0.32) !important;
+    background: rgba(16, 185, 129, 0.1) !important;
+    color: rgb(209, 250, 229) !important;
+    font-weight: 800 !important;
+    box-shadow: none !important;
+}
+
+.fi-pagination-previous button:hover:not([disabled]),
+.fi-pagination-next button:hover:not([disabled]),
+.fi-pagination-item-previous button:hover:not([disabled]),
+.fi-pagination-item-next button:hover:not([disabled]),
+.fi-pagination-items > :first-child button:hover:not([disabled]),
+.fi-pagination-items > :last-child button:hover:not([disabled]),
+.fi-pagination-links > :first-child button:hover:not([disabled]),
+.fi-pagination-links > :last-child button:hover:not([disabled]),
+.fi-pagination-previous a:hover,
+.fi-pagination-next a:hover,
+.fi-pagination-item-previous a:hover,
+.fi-pagination-item-next a:hover,
+.fi-pagination-items > :first-child a:hover,
+.fi-pagination-items > :last-child a:hover,
+.fi-pagination-links > :first-child a:hover,
+.fi-pagination-links > :last-child a:hover {
+    background: rgb(16, 185, 129) !important;
+    color: white !important;
+}
+
+.fi-pagination-previous button:disabled,
+.fi-pagination-next button:disabled,
+.fi-pagination-item-previous button:disabled,
+.fi-pagination-item-next button:disabled,
+.fi-pagination-items > :first-child button:disabled,
+.fi-pagination-items > :last-child button:disabled,
+.fi-pagination-links > :first-child button:disabled,
+.fi-pagination-links > :last-child button:disabled {
+    border-color: rgba(148, 163, 184, 0.14) !important;
+    background: rgba(15, 23, 42, 0.5) !important;
+    color: rgb(100, 116, 139) !important;
+}
+
+@media (max-width: 768px) {
+    .fi-ta-footer,
+    .fi-ta-pagination,
+    .fi-pagination {
+        align-items: stretch !important;
+    }
+}
+
+/* Products use 50 rows by default, so hide the per-page selector. */
+.fi-pagination-records-per-page,
+.fi-ta-records-per-page,
+.fi-pagination-records-per-page-select-ctn,
+.fi-ta-records-per-page-select-ctn {
+    display: none !important;
+}
+
+/* ----------------------------------------------------------------
+   PRODUCTS TABLE SEARCH / FILTER BAR
+   Centered, simple controls for product lookup.
+   ---------------------------------------------------------------- */
+.fi-resource-list-records-page .fi-ta-header-toolbar {
+    justify-content: center !important;
+    padding: 0.875rem 1rem !important;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.12) !important;
+}
+
+.fi-resource-list-records-page .fi-ta-header-toolbar > div {
+    justify-content: center !important;
+}
+
+.fi-resource-list-records-page .fi-ta-search,
+.fi-resource-list-records-page .fi-ta-filters,
+.fi-resource-list-records-page .fi-ta-filters-trigger-action {
+    flex-shrink: 0 !important;
+}
+
+.fi-resource-list-records-page .fi-ta-search {
+    width: min(32rem, calc(100vw - 3rem)) !important;
+}
+
+.fi-resource-list-records-page .fi-ta-search .fi-input-wrp,
+.fi-resource-list-records-page .fi-ta-search input {
+    min-height: 2.75rem !important;
+}
+
+.fi-resource-list-records-page .fi-ta-search .fi-input-wrp {
+    border-radius: 999px !important;
+    border: 1px solid rgba(52, 211, 153, 0.24) !important;
+    background: rgba(2, 6, 23, 0.78) !important;
+    box-shadow: 0 12px 30px rgba(2, 6, 23, 0.18) !important;
+}
+
+.fi-resource-list-records-page .fi-ta-search input {
+    font-size: 0.925rem !important;
+    font-weight: 600 !important;
+}
+
+.fi-resource-list-records-page .fi-ta-search input::placeholder {
+    color: rgb(100, 116, 139) !important;
+}
+
+.fi-resource-list-records-page .fi-ta-filters-trigger-action,
+.fi-resource-list-records-page .fi-ta-header-toolbar .fi-btn {
+    border-radius: 999px !important;
+}
+
+@media (max-width: 768px) {
+    .fi-resource-list-records-page .fi-ta-header-toolbar,
+    .fi-resource-list-records-page .fi-ta-header-toolbar > div {
+        justify-content: stretch !important;
+    }
+
+    .fi-resource-list-records-page .fi-ta-search {
+        width: 100% !important;
+    }
+}
+
+/* ----------------------------------------------------------------
+   LOGIN PAGE
+   A focused sign-in screen for the store admin panel.
+   ---------------------------------------------------------------- */
+.pos-auth-shell {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: minmax(22rem, 0.95fr) minmax(24rem, 1.05fr);
+    background:
+        linear-gradient(135deg, rgba(15, 23, 42, 0.98), rgba(3, 7, 18, 1) 48%, rgba(4, 47, 46, 0.96));
+    color: #f8fafc;
+}
+
+.pos-auth-brand {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2rem;
+    padding: clamp(2rem, 5vw, 5.5rem);
+    border-right: 1px solid rgba(148, 163, 184, 0.16);
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+    background-size: 38px 38px;
+}
+
+.pos-auth-brand-mark {
+    width: 4.5rem;
+    height: 4.5rem;
+    border-radius: 1.25rem;
+    display: grid;
+    place-items: center;
+    background: rgba(16, 185, 129, 0.16);
+    border: 1px solid rgba(52, 211, 153, 0.34);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.22);
+    overflow: hidden;
+}
+
+.pos-auth-brand-mark img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 0.7rem;
+}
+
+.pos-auth-brand-mark span {
+    font-size: 2rem;
+    font-weight: 900;
+    color: #34d399;
+}
+
+.pos-auth-kicker {
+    margin: 0 0 0.85rem;
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #5eead4;
+}
+
+.pos-auth-brand h1 {
+    margin: 0;
+    max-width: 12ch;
+    font-size: clamp(2.4rem, 5vw, 4.7rem);
+    line-height: 0.98;
+    font-weight: 900;
+    letter-spacing: 0;
+}
+
+.pos-auth-copy {
+    max-width: 34rem;
+    margin: 1.25rem 0 0;
+    font-size: 1rem;
+    line-height: 1.8;
+    color: #cbd5e1;
+}
+
+.pos-auth-status-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.85rem;
+    max-width: 34rem;
+}
+
+.pos-auth-status-grid div {
+    border-radius: 0.75rem;
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    background: rgba(2, 6, 23, 0.42);
+    padding: 0.9rem;
+}
+
+.pos-auth-status-grid strong,
+.pos-auth-status-grid span {
+    display: block;
+}
+
+.pos-auth-status-grid strong {
+    font-size: 0.85rem;
+    color: #f8fafc;
+}
+
+.pos-auth-status-grid span {
+    margin-top: 0.2rem;
+    font-size: 0.74rem;
+    font-weight: 700;
+    color: #94a3b8;
+}
+
+.pos-auth-form-wrap {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: clamp(1.25rem, 4vw, 4rem);
+    background: #050507;
+}
+
+.pos-auth-form {
+    width: min(100%, 28rem) !important;
+    max-width: 28rem !important;
+    border-radius: 1.25rem !important;
+    border: 1px solid rgba(148, 163, 184, 0.16) !important;
+    background: rgba(17, 17, 19, 0.94) !important;
+    box-shadow: 0 28px 80px rgba(0, 0, 0, 0.36) !important;
+    padding: clamp(1.5rem, 4vw, 2.25rem) !important;
+}
+
+.pos-auth-form .fi-logo,
+.pos-auth-form .fi-simple-header-logo {
+    justify-content: flex-start !important;
+}
+
+.pos-auth-form .fi-simple-header-heading {
+    text-align: left !important;
+    font-size: 1.55rem !important;
+    line-height: 1.2 !important;
+    font-weight: 900 !important;
+    color: #ffffff !important;
+}
+
+.pos-auth-form .fi-simple-header-subheading {
+    text-align: left !important;
+    color: #94a3b8 !important;
+}
+
+.pos-auth-form .fi-input-wrp {
+    min-height: 3.15rem !important;
+    border-radius: 0.8rem !important;
+    background: #050507 !important;
+    border-color: rgba(148, 163, 184, 0.2) !important;
+}
+
+.pos-auth-form .fi-input {
+    min-height: 3.15rem !important;
+    font-size: 0.95rem !important;
+    color: #f8fafc !important;
+}
+
+.pos-auth-form .fi-btn {
+    min-height: 3.1rem !important;
+    border-radius: 0.8rem !important;
+    font-weight: 900 !important;
+}
+
+.pos-auth-form .fi-btn-color-primary {
+    background: #10b981 !important;
+    color: #02110c !important;
+    box-shadow: 0 16px 34px rgba(16, 185, 129, 0.22) !important;
+}
+
+.pos-auth-form .fi-btn-color-primary:hover {
+    background: #34d399 !important;
+}
+
+.pos-timebar {
+    isolation: isolate;
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    min-width: 18rem;
+    max-width: min(32rem, 48vw);
+    min-height: 3rem;
+    padding: 0.42rem 0.85rem 0.42rem 0.48rem;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 999px;
+    color: #f8fafc;
+    background:
+        radial-gradient(circle at 12% 12%, rgba(255, 255, 255, 0.32), transparent 22%),
+        linear-gradient(135deg, #0f766e 0%, #0ea5e9 54%, #2563eb 100%);
+    box-shadow: 0 14px 34px rgba(2, 6, 23, 0.2);
+}
+
+.pos-timebar::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    opacity: 0.42;
+    background:
+        linear-gradient(110deg, transparent 0%, rgba(255, 255, 255, 0.34) 42%, transparent 64%);
+    transform: translateX(-100%);
+    animation: pos-timebar-sheen 6s ease-in-out infinite;
+}
+
+.pos-timebar.is-night {
+    background:
+        radial-gradient(circle at 18% 18%, rgba(125, 211, 252, 0.26), transparent 24%),
+        linear-gradient(135deg, #111827 0%, #312e81 52%, #0f172a 100%);
+    box-shadow: 0 14px 34px rgba(15, 23, 42, 0.34);
+}
+
+.pos-timebar-orbit {
+    position: relative;
+    flex: 0 0 auto;
+    width: 2.1rem;
+    height: 2.1rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.16);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.22);
+}
+
+.pos-timebar-sun,
+.pos-timebar-moon,
+.pos-timebar-star {
+    position: absolute;
+    display: block;
+}
+
+.pos-timebar-sun {
+    inset: 0.45rem;
+    border-radius: 999px;
+    background: #fde68a;
+    box-shadow: 0 0 0 0.28rem rgba(253, 230, 138, 0.22), 0 0 1.1rem rgba(251, 191, 36, 0.72);
+    animation: pos-timebar-pulse 2.8s ease-in-out infinite;
+}
+
+.pos-timebar-moon {
+    inset: 0.42rem;
+    border-radius: 999px;
+    background: #e0f2fe;
+    box-shadow: inset -0.36rem 0 0 #94a3b8, 0 0 1rem rgba(186, 230, 253, 0.72);
+    opacity: 0;
+    transform: translateY(0.25rem) rotate(-18deg);
+}
+
+.pos-timebar-star {
+    width: 0.22rem;
+    height: 0.22rem;
+    border-radius: 999px;
+    background: #f8fafc;
+    opacity: 0;
+    animation: pos-timebar-twinkle 1.7s ease-in-out infinite;
+}
+
+.pos-timebar-star-one {
+    top: 0.42rem;
+    right: 0.46rem;
+}
+
+.pos-timebar-star-two {
+    right: 0.78rem;
+    bottom: 0.48rem;
+    animation-delay: 0.48s;
+}
+
+.pos-timebar.is-night .pos-timebar-sun {
+    opacity: 0;
+    transform: translateY(0.32rem) scale(0.72);
+}
+
+.pos-timebar.is-night .pos-timebar-moon,
+.pos-timebar.is-night .pos-timebar-star {
+    opacity: 1;
+}
+
+.pos-timebar-copy {
+    display: grid;
+    min-width: 6.8rem;
+    line-height: 1.05;
+}
+
+.pos-timebar-period {
+    font-size: 0.68rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.72);
+}
+
+.pos-timebar-copy strong {
+    font-variant-numeric: tabular-nums;
+    font-size: 1rem;
+    font-weight: 900;
+    color: #ffffff;
+}
+
+.pos-timebar-meta {
+    display: grid;
+    gap: 0.08rem;
+    min-width: 0;
+    padding-left: 0.7rem;
+    border-left: 1px solid rgba(255, 255, 255, 0.22);
+    font-size: 0.73rem;
+    font-weight: 800;
+    line-height: 1.1;
+    color: rgba(255, 255, 255, 0.78);
+}
+
+.pos-timebar-meta span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.pos-dashboard-timebar {
+    width: 100%;
+    max-width: none;
+    min-height: 4.15rem;
+    padding: 0.75rem 1.1rem 0.75rem 0.75rem;
+    border-radius: 1rem;
+}
+
+.pos-dashboard-timebar .pos-timebar-orbit {
+    width: 2.75rem;
+    height: 2.75rem;
+}
+
+.pos-dashboard-timebar .pos-timebar-copy {
+    min-width: 8.5rem;
+}
+
+.pos-dashboard-timebar .pos-timebar-copy strong {
+    font-size: 1.45rem;
+}
+
+.pos-dashboard-timebar .pos-timebar-period {
+    font-size: 0.74rem;
+}
+
+.pos-dashboard-timebar .pos-timebar-meta {
+    margin-left: auto;
+    font-size: 0.9rem;
+}
+
+.fi-modal-window:has(.pos-lend-detail-section) {
+    width: calc(100vw - 2rem) !important;
+    max-width: calc(100vw - 2rem) !important;
+}
+
+.fi-modal-content:has(.pos-lend-detail-section) {
+    display: grid !important;
+    gap: 1rem !important;
+    overflow: auto !important;
+    max-height: min(78vh, 48rem) !important;
+}
+
+.fi-modal-content:has(.pos-lend-detail-section) > *,
+.fi-modal-content:has(.pos-lend-detail-section) .fi-sc,
+.fi-modal-content:has(.pos-lend-detail-section) .fi-sc-component,
+.fi-modal-content:has(.pos-lend-detail-section) [style*="grid-column"] {
+    width: 100% !important;
+    max-width: none !important;
+    justify-self: stretch !important;
+}
+
+.pos-lend-detail-section,
+.pos-lend-detail-section .fi-section,
+.pos-lend-detail-section .fi-section-content-ctn {
+    width: 100% !important;
+    min-width: 0 !important;
+}
+
+.pos-lend-bill-single {
+    display: block !important;
+    width: 100% !important;
+    max-width: none !important;
+}
+
+.pos-lend-bill-single > *,
+.pos-lend-bill-single .fi-section,
+.pos-lend-bill-single .fi-section-content-ctn,
+.pos-lend-bill-single .fi-sc,
+.pos-lend-bill-single .fi-sc-component,
+.pos-lend-bill-single [class*="fi-section"] {
+    width: 100% !important;
+    max-width: none !important;
+}
+
+.pos-lend-detail-section .fi-section-content-ctn {
+    padding: 1rem !important;
+}
+
+.pos-lend-bill-summary {
+    position: relative;
+    border: 1px solid #d1d5db !important;
+    border-radius: 0.85rem !important;
+    background:
+        linear-gradient(#ffffff, #ffffff) padding-box,
+        repeating-linear-gradient(90deg, #d1d5db 0 0.45rem, transparent 0.45rem 0.85rem) border-box !important;
+    box-shadow: 0 14px 32px rgba(15, 23, 42, 0.08) !important;
+}
+
+.dark .pos-lend-bill-summary {
+    border-color: rgba(255, 255, 255, 0.14) !important;
+    background:
+        linear-gradient(#18181b, #18181b) padding-box,
+        repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.2) 0 0.45rem, transparent 0.45rem 0.85rem) border-box !important;
+    box-shadow: 0 14px 32px rgba(0, 0, 0, 0.32) !important;
+}
+
+.pos-lend-bill-summary::before {
+    content: "";
+    position: absolute;
+    inset-inline: 1rem;
+    top: 0;
+    height: 1px;
+    border-top: 1px dashed #cbd5e1;
+}
+
+.dark .pos-lend-bill-summary::before {
+    border-top-color: rgba(255, 255, 255, 0.18);
+}
+
+.pos-lend-bill-summary .fi-section-header-ctn {
+    background: #f8fafc !important;
+    border-bottom: 1px dashed #cbd5e1 !important;
+}
+
+.dark .pos-lend-bill-summary .fi-section-header-ctn {
+    background: #111113 !important;
+    border-bottom-color: rgba(255, 255, 255, 0.16) !important;
+}
+
+.pos-lend-bill-summary .fi-section-heading {
+    letter-spacing: 0.02em !important;
+    text-transform: uppercase !important;
+    font-size: 0.78rem !important;
+}
+
+.pos-lend-bill-summary .fi-in-entry-wrp {
+    border-radius: 0.65rem !important;
+    background: #f8fafc !important;
+    padding: 0.8rem !important;
+}
+
+.dark .pos-lend-bill-summary .fi-in-entry-wrp {
+    background: #111113 !important;
+}
+
+.pos-lend-bill-summary .fi-in-entry-wrp-label {
+    color: #64748b !important;
+    font-size: 0.72rem !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.04em !important;
+    text-transform: uppercase !important;
+}
+
+.dark .pos-lend-bill-summary .fi-in-entry-wrp-label {
+    color: #94a3b8 !important;
+}
+
+.pos-lend-items-list {
+    display: grid !important;
+    gap: 0.75rem !important;
+    width: 100% !important;
+    margin-top: 0.35rem !important;
+    padding-top: 1rem !important;
+    border-top: 1px dashed #cbd5e1 !important;
+}
+
+.dark .pos-lend-items-list {
+    border-top-color: rgba(255, 255, 255, 0.16) !important;
+}
+
+.pos-lend-items-list > * {
+    width: 100% !important;
+    min-width: 0 !important;
+}
+
+.pos-lend-items-list .fi-in-repeatable-item,
+.pos-lend-items-list .fi-in-repeatable-entry-item {
+    width: 100% !important;
+    border: 1px dashed #cbd5e1 !important;
+    border-radius: 0.75rem !important;
+    background: #f8fafc !important;
+    padding: 0.85rem !important;
+}
+
+.dark .pos-lend-items-list .fi-in-repeatable-item,
+.dark .pos-lend-items-list .fi-in-repeatable-entry-item {
+    border-color: rgba(255, 255, 255, 0.16) !important;
+    background: #111113 !important;
+}
+
+.pos-lend-items-list .fi-in-repeatable-item > *,
+.pos-lend-items-list .fi-in-repeatable-entry-item > * {
+    align-items: center !important;
+}
+
+.pos-lend-items-list .fi-in-entry-wrp,
+.pos-lend-detail-section .fi-in-entry-wrp {
+    min-width: 0 !important;
+    overflow: visible !important;
+}
+
+.pos-lend-items-list .fi-in-text,
+.pos-lend-detail-section .fi-in-text {
+    min-width: 0 !important;
+    white-space: normal !important;
+    word-break: break-word !important;
+}
+
+/* ----------------------------------------------------------------
+   SHARED EXPAND / COLLAPSE STATES
+   Keeps Filament sections, repeaters, builders, table row details,
+   and sidebar groups visually honest when opened or closed.
+   ---------------------------------------------------------------- */
+.fi-collapsible {
+    min-height: 0 !important;
+}
+
+.fi-section.fi-collapsible,
+.fi-fo-repeater-item,
+.fi-fo-builder-item,
+.fi-sidebar-group {
+    transition:
+        border-color 0.18s ease,
+        box-shadow 0.18s ease,
+        background-color 0.18s ease !important;
+}
+
+.fi-section.fi-collapsible > .fi-section-header,
+.fi-section.fi-collapsible > .fi-section-header-ctn,
+.fi-fo-repeater-item-header,
+.fi-fo-builder-item-header,
+.fi-sidebar-group-btn {
+    cursor: pointer !important;
+}
+
+.fi-section.fi-collapsible.fi-collapsed,
+.fi-fo-repeater-item.fi-collapsed,
+.fi-fo-builder-item.fi-collapsed,
+.fi-sidebar-group.fi-collapsed {
+    border-style: dashed !important;
+    box-shadow: none !important;
+}
+
+.fi-section.fi-collapsible.fi-collapsed > .fi-section-header,
+.fi-section.fi-collapsible.fi-collapsed > .fi-section-header-ctn,
+.fi-fo-repeater-item.fi-collapsed > .fi-fo-repeater-item-header,
+.fi-fo-builder-item.fi-collapsed > .fi-fo-builder-item-header {
+    border-bottom-color: transparent !important;
+}
+
+.fi-section-content-ctn[aria-expanded="false"],
+.fi-section.fi-collapsed > .fi-section-content-ctn,
+.fi-fo-repeater-item.fi-collapsed > .fi-fo-repeater-item-content,
+.fi-fo-builder-item.fi-collapsed > .fi-fo-builder-item-content,
+.fi-sidebar-group.fi-collapsed > .fi-sidebar-group-items {
+    display: none !important;
+    height: 0 !important;
+    max-height: 0 !important;
+    margin: 0 !important;
+    opacity: 0 !important;
+    overflow: hidden !important;
+    padding-bottom: 0 !important;
+    padding-top: 0 !important;
+    visibility: hidden !important;
+}
+
+.fi-section-content-ctn[aria-expanded="true"],
+.fi-section:not(.fi-collapsed) > .fi-section-content-ctn,
+.fi-fo-repeater-item:not(.fi-collapsed) > .fi-fo-repeater-item-content,
+.fi-fo-builder-item:not(.fi-collapsed) > .fi-fo-builder-item-content {
+    display: block !important;
+    height: auto !important;
+    max-height: none !important;
+    opacity: 1 !important;
+    overflow: visible !important;
+    visibility: visible !important;
+}
+
+.fi-sidebar-group:not(.fi-collapsed) > .fi-sidebar-group-items {
+    display: flex !important;
+    flex-direction: column !important;
+    height: auto !important;
+    max-height: none !important;
+    opacity: 1 !important;
+    overflow: visible !important;
+    visibility: visible !important;
+}
+
+.fi-section-collapse-btn,
+.fi-fo-repeater-item-header-collapse-action,
+.fi-fo-repeater-item-header-expand-action,
+.fi-fo-builder-item-header-collapse-action,
+.fi-fo-builder-item-header-expand-action {
+    flex-shrink: 0 !important;
+}
+
+.fi-section-collapse-btn svg,
+.fi-sidebar-group-btn svg:last-child {
+    transition: transform 0.18s ease, opacity 0.18s ease !important;
+}
+
+.fi-section.fi-collapsed .fi-section-collapse-btn svg,
+.fi-sidebar-group.fi-collapsed .fi-sidebar-group-btn svg:last-child {
+    opacity: 0.72 !important;
+    transform: rotate(180deg) !important;
+}
+
+@keyframes pos-timebar-sheen {
+    0%,
+    46% {
+        transform: translateX(-110%);
+    }
+
+    72%,
+    100% {
+        transform: translateX(110%);
+    }
+}
+
+@keyframes pos-timebar-pulse {
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.08);
+    }
+}
+
+@keyframes pos-timebar-twinkle {
+    0%,
+    100% {
+        transform: scale(0.72);
+        opacity: 0.45;
+    }
+
+    50% {
+        transform: scale(1.15);
+        opacity: 1;
+    }
+}
+
+@media (max-width: 900px) {
+    .pos-auth-shell {
+        grid-template-columns: 1fr;
+    }
+
+    .pos-auth-brand {
+        min-height: auto;
+        padding: 2rem 1.25rem 1rem;
+        border-right: 0;
+        border-bottom: 1px solid rgba(148, 163, 184, 0.16);
+    }
+
+    .pos-auth-brand h1 {
+        max-width: none;
+        font-size: 2.25rem;
+    }
+
+    .pos-auth-copy {
+        display: none;
+    }
+
+    .pos-auth-status-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .pos-auth-form-wrap {
+        min-height: auto;
+        place-items: start center;
+        padding: 1.25rem;
+    }
+}
+
+@media (max-width: 520px) {
+    .pos-auth-status-grid {
+        display: none;
+    }
+
+    .pos-auth-form {
+        border-radius: 1rem !important;
+    }
+}
+
+@media (max-width: 860px) {
+    .pos-timebar {
+        min-width: 12rem;
+        max-width: 50vw;
+        gap: 0.55rem;
+        padding-right: 0.62rem;
+    }
+
+    .pos-timebar-copy {
+        min-width: 5.8rem;
+    }
+
+    .pos-timebar-meta {
+        display: none;
+    }
+}
+
+@media (max-width: 560px) {
+    .fi-topbar .pos-timebar {
+        min-width: 0;
+        width: 3rem;
+        padding: 0.42rem;
+        justify-content: center;
+    }
+
+    .fi-topbar .pos-timebar-copy,
+    .fi-topbar .pos-timebar-meta {
+        display: none;
+    }
+
+    .pos-dashboard-timebar {
+        min-width: 0;
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .pos-dashboard-timebar .pos-timebar-copy {
+        display: grid;
+        min-width: 7.2rem;
+    }
+}

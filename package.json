@@ -1,0 +1,44 @@
+{
+    "$schema": "https://www.schemastore.org/package.json",
+    "private": true,
+    "name": "pos-application",
+    "version": "1.0.0",
+    "description": "POS Terminal Application",
+    "author": "Anantha Shop",
+    "type": "module",
+    "main": "main.cjs",
+    "scripts": {
+        "start:electron": "electron .",
+        "build:electron": "electron-builder",
+        "build": "vite build",
+        "dev": "vite"
+    },
+    "devDependencies": {
+        "@tailwindcss/forms": "^0.5.11",
+        "@tailwindcss/typography": "^0.5.19",
+        "@tailwindcss/vite": "^4.2.2",
+        "autoprefixer": "^10.5.0",
+        "concurrently": "^9.0.1",
+        "electron": "^42.4.1",
+        "electron-builder": "^26.15.3",
+        "laravel-vite-plugin": "^3.0.0",
+        "postcss": "^8.5.10",
+        "tailwindcss": "^4.2.2",
+        "vite": "^8.0.0"
+    },
+    "build": {
+        "asar": false,
+        "appId": "com.pos.app",
+        "productName": "POS Setup",
+        "directories": {
+            "output": "dist-electron"
+        },
+        "extraResources": [
+            "bin/**/*",
+            "database/**/*"
+        ],
+        "win": {
+            "target": "nsis"
+        }
+    }
+}
