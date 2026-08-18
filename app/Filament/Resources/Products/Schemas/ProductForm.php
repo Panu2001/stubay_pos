@@ -16,6 +16,7 @@ use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Forms\Components\Placeholder;
 use Illuminate\Support\Str;
+use Illuminate\Support\HtmlString;
 
 class ProductForm
 {
@@ -90,16 +91,6 @@ class ProductForm
                                     ->numeric()
                                     ->default(0)
                                     ->hidden(fn (?Product $record) => $record !== null),
-                                
-                                Placeholder::make('old_stock_display')
-                                    ->label('Number of Old Stocks')
-                                    ->content(fn (?Product $record) => $record ? (string) ($record->stock_quantity ?? 0) : '-')
-                                    ->visible(fn (?Product $record) => $record !== null),
-                                    
-                                Placeholder::make('new_stock_display')
-                                    ->label('Number of New Stocks')
-                                    ->content(fn (?Product $record) => $record ? (string) ($record->activeStockBatches()->sum('remaining_quantity') ?? 0) : '-')
-                                    ->visible(fn (?Product $record) => $record !== null),
                                 DatePicker::make('mfg_date')
                                     ->label('Manufacture Date')
                                     ->native(true),
@@ -183,16 +174,6 @@ class ProductForm
                                     ->numeric()
                                     ->default(0)
                                     ->hidden(fn (?Product $record) => $record !== null),
-                                
-                                Placeholder::make('old_stock_display_auto')
-                                    ->label('Number of Old Stocks')
-                                    ->content(fn (?Product $record) => $record ? (string) ($record->stock_quantity ?? 0) : '-')
-                                    ->visible(fn (?Product $record) => $record !== null),
-                                    
-                                Placeholder::make('new_stock_display_auto')
-                                    ->label('Number of New Stocks')
-                                    ->content(fn (?Product $record) => $record ? (string) ($record->activeStockBatches()->sum('remaining_quantity') ?? 0) : '-')
-                                    ->visible(fn (?Product $record) => $record !== null),
                                 DatePicker::make('mfg_date_auto')
                                     ->label('Manufacture Date')
                                     ->native(true),
@@ -228,6 +209,37 @@ class ProductForm
                             ->visibility('public')
                             ->columnSpanFull(),
                     ])->columns(3),
+
+                Section::make('Current Stock Overview')
+                    ->visible(fn (?Product $record) => $record !== null)
+                    ->schema([
+                        Placeholder::make('old_stock_widget')
+                            ->hiddenLabel()
+                            ->content(fn (?Product $record) => new HtmlString(
+                                '<div class="flex items-center justify-between p-4 bg-white border border-gray-200 rounded-xl shadow-sm" style="color: #111827;">' .
+                                    '<div>' .
+                                        '<p class="text-sm font-medium" style="color: #6b7280;">Number of Old Stocks</p>' .
+                                        '<p class="text-3xl font-bold mt-1" style="color: #2563eb;">' . ($record->stock_quantity ?? 0) . '</p>' .
+                                    '</div>' .
+                                    '<div class="p-3 rounded-lg" style="background-color: #eff6ff;">' .
+                                        '<svg class="w-6 h-6" style="color: #2563eb;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg>' .
+                                    '</div>' .
+                                '</div>'
+                            )),
+                        Placeholder::make('new_stock_widget')
+                            ->hiddenLabel()
+                            ->content(fn (?Product $record) => new HtmlString(
+                                '<div class="flex items-center justify-between p-4 bg-white border border-gray-200 rounded-xl shadow-sm" style="color: #111827;">' .
+                                    '<div>' .
+                                        '<p class="text-sm font-medium" style="color: #6b7280;">Number of New Stocks</p>' .
+                                        '<p class="text-3xl font-bold mt-1" style="color: #059669;">' . ($record->activeStockBatches()->sum('remaining_quantity') ?? 0) . '</p>' .
+                                    '</div>' .
+                                    '<div class="p-3 rounded-lg" style="background-color: #ecfdf5;">' .
+                                        '<svg class="w-6 h-6" style="color: #059669;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" /></svg>' .
+                                    '</div>' .
+                                '</div>'
+                            )),
+                    ])->columns(2),
             ]);
     }
 
