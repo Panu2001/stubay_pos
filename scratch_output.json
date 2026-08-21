@@ -1,0 +1,54 @@
+[
+    {
+        "id": 5,
+        "purchase_number": "PUR-6A82B8CE915C4",
+        "supplier_id": 4,
+        "user_id": 5,
+        "total_amount": 8292.24,
+        "paid_amount": 0,
+        "owed_amount": 8292.24,
+        "payment_method": "cash",
+        "notes": null,
+        "created_at": "2026-08-17 13:01:26",
+        "updated_at": "2026-08-17 13:01:26"
+    },
+    {
+        "id": 6,
+        "purchase_number": "PUR-6A82C5C476C1C",
+        "supplier_id": 4,
+        "user_id": 5,
+        "total_amount": 18252,
+        "paid_amount": 0,
+        "owed_amount": 18252,
+        "payment_method": "cash",
+        "notes": null,
+        "created_at": "2026-08-17 13:56:44",
+        "updated_at": "2026-08-17 13:56:44"
+    },
+    {
+        "id": 7,
+        "purchase_number": "PUR-6A82C95514E5F",
+        "supplier_id": 4,
+        "user_id": 5,
+        "total_amount": 22402.65,
+        "paid_amount": 22419.93,
+        "owed_amount": 0,
+        "payment_method": "cash",
+        "notes": null,
+        "created_at": "2026-08-17 14:11:57",
+        "updated_at": "2026-08-17 14:11:57"
+    },
+    {
+        "id": 8,
+        "purchase_number": "PUR-6A82F33547DF6",
+        "supplier_id": 5,
+        "user_id": 5,
+        "total_amount": 1485,
+        "paid_amount": 1485,
+        "owed_amount": 0,
+        "payment_method": "cash",
+        "notes": null,
+        "created_at": "2026-08-17 17:10:37",
+        "updated_at": "2026-08-17 17:10:44"
+    }
+]

@@ -181,4 +181,64 @@ class ManageSettings extends Page implements HasForms
             ->success()
             ->send();
     }
+
+    public function sendTestEmail(): void
+    {
+        $this->save();
+
+        $smtpHost = Setting::get('smtp_host');
+        $smtpPort = (int) Setting::get('smtp_port', 587);
+        $smtpUser = Setting::get('smtp_user');
+        $smtpPass = Setting::get('smtp_pass');
+        $toEmail = Setting::get('notification_email') ?: Setting::get('store_email');
+
+        if (empty($smtpHost) || empty($smtpUser) || empty($smtpPass)) {
+            Notification::make()
+                ->title('SMTP Incomplete')
+                ->body('Please fill in SMTP Host, Username, and Password first.')
+                ->warning()
+                ->send();
+            return;
+        }
+
+        if (empty($toEmail)) {
+            Notification::make()
+                ->title('Missing Recipient Email')
+                ->body('Please enter an Admin Notification Email or Store Email to receive the test.')
+                ->warning()
+                ->send();
+            return;
+        }
+
+        try {
+            config([
+                'mail.default' => 'smtp',
+                'mail.mailers.smtp.host' => $smtpHost,
+                'mail.mailers.smtp.port' => $smtpPort,
+                'mail.mailers.smtp.username' => $smtpUser,
+                'mail.mailers.smtp.password' => $smtpPass,
+                'mail.mailers.smtp.scheme' => ($smtpPort === 465) ? 'smtps' : null,
+                'mail.from.address' => Setting::get('store_email') ?: $smtpUser,
+                'mail.from.name' => Setting::get('store_name', 'EASY POS'),
+            ]);
+
+            \Illuminate\Support\Facades\Mail::raw("Hello!\n\nThis is a confirmation that your SMTP configuration is working perfectly on " . Setting::get('store_name', 'EASY POS') . ".\n\nHost: {$smtpHost}\nPort: {$smtpPort}\nUsername: {$smtpUser}\nSent At: " . now()->toDateTimeString(), function ($msg) use ($toEmail) {
+                $msg->to($toEmail)
+                    ->subject('POS System - SMTP Test Email Successful');
+            });
+
+            Notification::make()
+                ->title('Test Email Sent Successfully!')
+                ->body("A test email was delivered to {$toEmail} via {$smtpHost}.")
+                ->success()
+                ->send();
+        } catch (\Throwable $e) {
+            Notification::make()
+                ->title('SMTP Connection Failed')
+                ->body($e->getMessage())
+                ->danger()
+                ->persistent()
+                ->send();
+        }
+    }
 }

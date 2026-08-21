@@ -63,5 +63,32 @@ class AppServiceProvider extends ServiceProvider
                 \App\Services\ShiftService::closeForUser($event->user);
             }
         });
+
+        // Dynamic Mail Configuration from Database Settings
+        try {
+            if (\Illuminate\Support\Facades\Schema::hasTable('settings')) {
+                $smtpHost = \App\Models\Setting::get('smtp_host');
+                if (!empty($smtpHost)) {
+                    $smtpPort = (int) \App\Models\Setting::get('smtp_port', 587);
+                    $smtpUser = \App\Models\Setting::get('smtp_user');
+                    $smtpPass = \App\Models\Setting::get('smtp_pass');
+                    $storeName = \App\Models\Setting::get('store_name', config('app.name', 'EASY POS'));
+                    $fromEmail = \App\Models\Setting::get('store_email') ?: \App\Models\Setting::get('notification_email') ?: $smtpUser;
+
+                    config([
+                        'mail.default' => 'smtp',
+                        'mail.mailers.smtp.host' => $smtpHost,
+                        'mail.mailers.smtp.port' => $smtpPort,
+                        'mail.mailers.smtp.username' => $smtpUser,
+                        'mail.mailers.smtp.password' => $smtpPass,
+                        'mail.mailers.smtp.scheme' => ($smtpPort === 465) ? 'smtps' : null,
+                        'mail.from.address' => $fromEmail ?: config('mail.from.address'),
+                        'mail.from.name' => $storeName,
+                    ]);
+                }
+            }
+        } catch (\Throwable $e) {
+            // Fallback gracefully if database is not reachable
+        }
     }
 }

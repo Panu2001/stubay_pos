@@ -57,7 +57,18 @@ class ProductsTable
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                \Filament\Tables\Filters\Filter::make('expired')
+                    ->label('Already Expired')
+                    ->query(fn (\Illuminate\Database\Eloquent\Builder $query): \Illuminate\Database\Eloquent\Builder => $query
+                        ->whereNotNull('expiry_date')
+                        ->where('expiry_date', '<', now()->toDateString())
+                    ),
+                \Filament\Tables\Filters\Filter::make('expiring_soon')
+                    ->label('Expiring Soon (30 Days)')
+                    ->query(fn (\Illuminate\Database\Eloquent\Builder $query): \Illuminate\Database\Eloquent\Builder => $query
+                        ->whereNotNull('expiry_date')
+                        ->whereBetween('expiry_date', [now()->toDateString(), now()->addDays(30)->toDateString()])
+                    ),
             ])
             ->recordActions([
                 EditAction::make(),

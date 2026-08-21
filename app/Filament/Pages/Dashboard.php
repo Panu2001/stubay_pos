@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Filament\Pages;
-
 use App\Filament\Widgets\RecentSales;
 use App\Filament\Widgets\RevenueTrend;
 use App\Filament\Widgets\ShiftStatusWidget;

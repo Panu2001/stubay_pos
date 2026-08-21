@@ -21,7 +21,7 @@ class LoginHistoryResource extends Resource
     protected static ?string $model = LoginHistory::class;
 
     protected static \UnitEnum|string|null $navigationGroup = 'Store Management';
-    protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-shield-check';
+    protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-arrow-right-on-rectangle';
 
     public static function canViewAny(): bool
     {

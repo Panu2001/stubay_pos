@@ -14,7 +14,7 @@ use Filament\Notifications\Notification;
 
 class CookieSettings extends Page
 {
-    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-shield-check';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-finger-print';
     protected static string | \UnitEnum | null $navigationGroup = 'Store Management';
     protected static ?string $title = 'Cookie Management';
 

@@ -69,7 +69,8 @@ class SupplierResource extends Resource
             ->columns([
                 TextColumn::make('name')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->url(fn (Supplier $record): string => SupplierPurchaseResource::getUrl('view_purchases', ['record' => $record])),
                 TextColumn::make('contact_person')
                     ->searchable(),
                 TextColumn::make('phone')

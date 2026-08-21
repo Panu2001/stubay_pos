@@ -43,6 +43,14 @@
         ->whereBetween('expiry_date', [now()->toDateString(), now()->addDays(30)->toDateString()])
         ->orderBy('expiry_date', 'asc')
         ->get();
+
+    // 6. Supplier Purchases
+    $allSupplierPurchases = \App\Models\SupplierPurchase::all();
+    $supplierTotal = $allSupplierPurchases->sum('total_amount');
+    $supplierPaid = $allSupplierPurchases->sum('paid_amount');
+    $supplierOwed = $allSupplierPurchases->sum('owed_amount');
+    $supplierPaidProgress = $supplierTotal > 0 ? ($supplierPaid / $supplierTotal) * 100 : 0;
+    $supplierOwedProgress = $supplierTotal > 0 ? ($supplierOwed / $supplierTotal) * 100 : 0;
 @endphp
 
 <div class="space-y-6">
@@ -152,41 +160,7 @@
             <span class="text-xs text-gray-400 dark:text-gray-500 mt-2">Active sales today</span>
         </div>
 
-        <!-- Weekly Sales -->
-        <div class="bg-white dark:bg-gray-900/80 border border-gray-100 dark:border-gray-800 rounded-xl p-6 stat-card shadow-sm flex flex-col justify-between min-h-[140px] transition-colors duration-200">
-            <div class="flex items-center justify-between">
-                <span class="text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider font-semibold">Weekly Sales</span>
-                <div class="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center">
-                    <i data-lucide="calendar" class="w-4 h-4 text-blue-500 dark:text-blue-400"></i>
-                </div>
-            </div>
-            <p class="text-3xl font-extrabold text-gray-900 dark:text-white tracking-wide mt-2">{{ $currency }}{{ number_format($weekSales, 2) }}</p>
-            <span class="text-xs text-gray-400 dark:text-gray-500 mt-2">This calendar week</span>
-        </div>
 
-        <!-- Monthly Sales -->
-        <div class="bg-white dark:bg-gray-900/80 border border-gray-100 dark:border-gray-800 rounded-xl p-6 stat-card shadow-sm flex flex-col justify-between min-h-[140px] transition-colors duration-200">
-            <div class="flex items-center justify-between">
-                <span class="text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider font-semibold">Monthly Sales</span>
-                <div class="w-8 h-8 rounded-lg bg-purple-500/10 flex items-center justify-center">
-                    <i data-lucide="bar-chart-3" class="w-4 h-4 text-purple-500 dark:text-purple-400"></i>
-                </div>
-            </div>
-            <p class="text-3xl font-extrabold text-gray-900 dark:text-white tracking-wide mt-2">{{ $currency }}{{ number_format($monthSales, 2) }}</p>
-            <span class="text-xs text-gray-400 dark:text-gray-500 mt-2">Current month's sales</span>
-        </div>
-
-        <!-- Total Sales (All Time) -->
-        <div class="bg-white dark:bg-gray-900/80 border border-gray-100 dark:border-gray-800 rounded-xl p-6 stat-card shadow-sm flex flex-col justify-between min-h-[140px] transition-colors duration-200">
-            <div class="flex items-center justify-between">
-                <span class="text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider font-semibold">Total Sales (All Time)</span>
-                <div class="w-8 h-8 rounded-lg bg-orange-500/10 flex items-center justify-center">
-                    <i data-lucide="coins" class="w-4 h-4 text-orange-500 dark:text-orange-400"></i>
-                </div>
-            </div>
-            <p class="text-3xl font-extrabold text-gray-900 dark:text-white tracking-wide mt-2">{{ $currency }}{{ number_format($totalSales, 2) }}</p>
-            <span class="text-xs text-gray-400 dark:text-gray-500 mt-2">Cumulative overall sales</span>
-        </div>
 
         <!-- Total Lends -->
         <div class="bg-white dark:bg-gray-900/80 border border-gray-100 dark:border-gray-800 rounded-xl p-6 stat-card shadow-sm flex flex-col justify-between min-h-[140px] transition-colors duration-200">
@@ -200,6 +174,47 @@
             <span class="text-xs text-gray-400 dark:text-gray-500 mt-2">Pending customer debt</span>
         </div>
         
+    </div>
+
+    <!-- Supplier Purchases Widget -->
+    <div class="bg-white dark:bg-gray-900/80 border border-gray-100 dark:border-gray-800 rounded-xl p-6 shadow-sm transition-colors duration-200">
+        <div class="flex items-center justify-between mb-4">
+            <div>
+                <h2 class="text-lg font-bold text-gray-900 dark:text-white">Supplier Purchases Overview</h2>
+                <span class="text-sm text-gray-500 dark:text-gray-400">Total value of all purchases vs amount paid and pending</span>
+            </div>
+            <div class="w-10 h-10 rounded-lg bg-indigo-500/10 flex items-center justify-center">
+                <i data-lucide="truck" class="w-5 h-5 text-indigo-500 dark:text-indigo-400"></i>
+            </div>
+        </div>
+
+        <div class="space-y-4 mt-4">
+            <div class="flex justify-between text-sm font-medium">
+                <div>
+                    <span class="text-gray-500 dark:text-gray-400">Total Purchase Value:</span>
+                    <span class="text-gray-900 dark:text-white font-bold ml-1">{{ $currency }}{{ number_format($supplierTotal, 2) }}</span>
+                </div>
+                <div>
+                    <span class="text-gray-500 dark:text-gray-400">Paid:</span>
+                    <span class="text-emerald-600 dark:text-emerald-400 font-bold ml-1">{{ $currency }}{{ number_format($supplierPaid, 2) }}</span>
+                </div>
+                <div>
+                    <span class="text-gray-500 dark:text-gray-400">Pending (Owed):</span>
+                    <span class="text-rose-600 dark:text-rose-400 font-bold ml-1">{{ $currency }}{{ number_format($supplierOwed, 2) }}</span>
+                </div>
+            </div>
+
+            <!-- Dual Progress Bar -->
+            <div class="w-full bg-gray-100 rounded-full h-3 dark:bg-gray-800 flex overflow-hidden">
+                <div class="bg-emerald-500 h-3 transition-all duration-500" style="width: {{ $supplierPaidProgress }}%" title="Paid"></div>
+                <div class="bg-rose-500 h-3 transition-all duration-500" style="width: {{ $supplierOwedProgress }}%" title="Pending"></div>
+            </div>
+            
+            <div class="flex justify-between text-xs font-semibold">
+                <span class="text-emerald-600 dark:text-emerald-400">{{ number_format($supplierPaidProgress, 1) }}% Paid</span>
+                <span class="text-rose-600 dark:text-rose-400">{{ number_format($supplierOwedProgress, 1) }}% Pending</span>
+            </div>
+        </div>
     </div>
 
     <!-- Chart Row -->
@@ -314,88 +329,6 @@
         </div>
     </div>
 
-    <!-- Expiry and Alerts Row -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        
-        <!-- Expired Products -->
-        <div class="bg-white dark:bg-gray-900/50 border border-gray-100 dark:border-gray-800 rounded-xl p-6 shadow-sm flex flex-col h-[350px] transition-colors duration-200">
-            <div class="flex items-center justify-between mb-4 pb-2 border-b border-gray-100 dark:border-gray-800/60">
-                <div>
-                    <h2 class="font-bold text-gray-900 dark:text-white text-base flex items-center gap-2">
-                        <span class="w-2.5 h-2.5 rounded-full bg-rose-500 animate-pulse"></span>
-                        Already Expired Products
-                    </h2>
-                    <p class="text-xs text-gray-400 dark:text-gray-500">Products whose expiry date has passed</p>
-                </div>
-                <span class="bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20 px-2.5 py-0.5 rounded-full text-xs font-bold">
-                    {{ count($expiredProducts) }} Items
-                </span>
-            </div>
-            
-            <div class="flex-1 overflow-y-auto space-y-3 pr-2 scrollbar-thin">
-                @forelse($expiredProducts as $prod)
-                    <div class="bg-gray-50 dark:bg-gray-950/40 p-3 rounded-lg border border-gray-100 dark:border-white/5 flex justify-between items-center text-xs transition-colors">
-                        <div class="min-w-0 flex-1">
-                            <p class="font-bold text-gray-800 dark:text-gray-200 truncate">{{ $prod->name }}</p>
-                            <p class="text-gray-500 dark:text-gray-400 font-semibold mt-0.5">SKU/Barcode: {{ $prod->barcode ?? 'N/A' }} | Qty: {{ $prod->stock_quantity ?? 0 }}</p>
-                        </div>
-                        <div class="text-right ml-4 shrink-0">
-                            <span class="text-rose-600 dark:text-rose-400 font-bold bg-rose-500/5 px-2 py-1 rounded border border-rose-500/10">
-                                Expired: {{ \Carbon\Carbon::parse($prod->expiry_date)->format('M d, Y') }}
-                            </span>
-                        </div>
-                    </div>
-                @empty
-                    <div class="h-full flex flex-col items-center justify-center text-center text-gray-400 dark:text-gray-500 py-12">
-                        <svg class="w-10 h-10 text-emerald-500/20 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
-                        <p class="text-xs font-semibold">No expired products found</p>
-                    </div>
-                @endforelse
-            </div>
-        </div>
-
-        <!-- Expiring Within 30 Days -->
-        <div class="bg-white dark:bg-gray-900/50 border border-gray-100 dark:border-gray-800 rounded-xl p-6 shadow-sm flex flex-col h-[350px] transition-colors duration-200">
-            <div class="flex items-center justify-between mb-4 pb-2 border-b border-gray-100 dark:border-gray-800/60">
-                <div>
-                    <h2 class="font-bold text-gray-900 dark:text-white text-base flex items-center gap-2">
-                        <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
-                        Expiring Within 30 Days
-                    </h2>
-                    <p class="text-xs text-gray-400 dark:text-gray-500">Products expiring in the next 30 days</p>
-                </div>
-                <span class="bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 px-2.5 py-0.5 rounded-full text-xs font-bold">
-                    {{ count($expiringProducts) }} Items
-                </span>
-            </div>
-            
-            <div class="flex-1 overflow-y-auto space-y-3 pr-2 scrollbar-thin">
-                @forelse($expiringProducts as $prod)
-                    <div class="bg-gray-50 dark:bg-gray-950/40 p-3 rounded-lg border border-gray-100 dark:border-white/5 flex justify-between items-center text-xs transition-colors">
-                        <div class="min-w-0 flex-1">
-                            <p class="font-bold text-gray-800 dark:text-gray-200 truncate">{{ $prod->name }}</p>
-                            <p class="text-gray-500 dark:text-gray-400 font-semibold mt-0.5">SKU/Barcode: {{ $prod->barcode ?? 'N/A' }} | Qty: {{ $prod->stock_quantity ?? 0 }}</p>
-                        </div>
-                        <div class="text-right ml-4 shrink-0">
-                            <span class="text-amber-600 dark:text-amber-400 font-bold bg-amber-500/5 px-2 py-1 rounded border border-amber-500/10">
-                                Expires: {{ \Carbon\Carbon::parse($prod->expiry_date)->format('M d, Y') }}
-                            </span>
-                        </div>
-                    </div>
-                @empty
-                    <div class="h-full flex flex-col items-center justify-center text-center text-gray-400 dark:text-gray-500 py-12">
-                        <svg class="w-10 h-10 text-emerald-500/20 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        <p class="text-xs font-semibold">No products expiring soon</p>
-                    </div>
-                @endforelse
-            </div>
-        </div>
-    </div>
-
-    <!-- Outstanding Lends Table Widget -->
-    <div class="mt-6">
-        @livewire(\App\Filament\Widgets\OutstandingLendsTable::class)
-    </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

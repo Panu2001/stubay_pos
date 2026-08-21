@@ -3,7 +3,7 @@
  <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Receipt #{{ $order->order_number }}</title>
+  <title>Receipt #<?php echo e($order->order_number); ?></title>
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
@@ -375,7 +375,7 @@
   </style>
  </head>
  <body>
-  @php $currency = \App\Models\Setting::get('currency', 'Rs'); @endphp
+  <?php $currency = \App\Models\Setting::get('currency', 'Rs'); ?>
   <div class="app-shell">
    <section class="pos-board" aria-label="Completed point of sale transaction">
     <header class="topbar">
@@ -383,11 +383,11 @@
       <div class="brand-mark" aria-hidden="true"><i data-lucide="shopping-basket" style="width:18px;height:18px;"></i>
       </div>
       <div>
-       <p class="m-0 font-semibold leading-tight">{{ \App\Models\Setting::get('store_name', 'Anantha Multishop') }}</p>
-       <p class="m-0 mt-1 text-xs opacity-70">Cashier: {{ $order->user->name ?? 'System' }}</p>
+       <p class="m-0 font-semibold leading-tight"><?php echo e(\App\Models\Setting::get('store_name', 'Anantha Multishop')); ?></p>
+       <p class="m-0 mt-1 text-xs opacity-70">Cashier: <?php echo e($order->user->name ?? 'System'); ?></p>
       </div>
      </div>
-     <span class="bg-emerald-100 text-emerald-700 rounded-full px-3 py-1 text-xs font-bold">{{ ucfirst($order->status ?? 'Completed') }}</span>
+     <span class="bg-emerald-100 text-emerald-700 rounded-full px-3 py-1 text-xs font-bold"><?php echo e(ucfirst($order->status ?? 'Completed')); ?></span>
     </header>
     <main class="main-stage">
      <section class="sale-panel">
@@ -395,17 +395,17 @@
           <i data-lucide="check" style="width:29px;height:29px;" aria-hidden="true"></i>
       </div>
       <p class="m-0 text-sm font-bold uppercase tracking-widest text-emerald-600">Transaction Successful</p>
-      <h1 class="mt-3 mb-3 text-5xl font-extrabold leading-tight tracking-tight">{{ $currency }}{{ number_format($order->total, 2) }}</h1>
-      <p class="m-0 max-w-md leading-relaxed opacity-75">Sale completed via {{ ucfirst($order->payment_method) }}. Your receipt has been generated.</p>
+      <h1 class="mt-3 mb-3 text-5xl font-extrabold leading-tight tracking-tight"><?php echo e($currency); ?><?php echo e(number_format($order->total, 2)); ?></h1>
+      <p class="m-0 max-w-md leading-relaxed opacity-75">Sale completed via <?php echo e(ucfirst($order->payment_method)); ?>. Your receipt has been generated.</p>
       <div class="dash-line"></div>
       <dl class="sale-meta grid grid-cols-2 gap-y-3 text-xs">
        <div>
         <dt class="opacity-60">Receipt #</dt>
-        <dd class="mt-1 font-bold text-sm">{{ $order->order_number }}</dd>
+        <dd class="mt-1 font-bold text-sm"><?php echo e($order->order_number); ?></dd>
        </div>
        <div>
         <dt class="opacity-60">Total Items</dt>
-        <dd class="mt-1 font-bold text-sm">{{ $order->items->sum('quantity') }}</dd>
+        <dd class="mt-1 font-bold text-sm"><?php echo e($order->items->sum('quantity')); ?></dd>
        </div>
       </dl>
       <div class="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -425,26 +425,27 @@
      <aside class="printer-zone" aria-label="Animated receipt printer">
       <div class="printer-unit">
        <article id="receipt" class="receipt" aria-label="Printed receipt">
-        @if($logo = \App\Models\Setting::get('store_logo'))
+        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($logo = \App\Models\Setting::get('store_logo')): ?>
             <div style="text-align: center; margin-bottom: 8px;">
-                <img src="{{ asset('storage/' . $logo) }}" style="height: 36px; width: auto; display: inline-block;" alt="Logo">
+                <img src="<?php echo e(asset('storage/' . $logo)); ?>" style="height: 36px; width: auto; display: inline-block;" alt="Logo">
             </div>
-        @endif
-        <h2 class="receipt-store m-0 text-sm font-bold">{{ \App\Models\Setting::get('store_name', 'Anantha Multishop') }}</h2>
+        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+        <h2 class="receipt-store m-0 text-sm font-bold"><?php echo e(\App\Models\Setting::get('store_name', 'Anantha Multishop')); ?></h2>
         <p class="receipt-small mt-2 mb-3 text-center">
-            {!! nl2br(e(\App\Models\Setting::get('store_address', "Store Address Line 1\nCity, State ZIP"))) !!}<br>
-            Tel: {{ \App\Models\Setting::get('store_phone', 'No Phone Set') }}
+            <?php echo nl2br(e(\App\Models\Setting::get('store_address', "Store Address Line 1\nCity, State ZIP"))); ?><br>
+            Tel: <?php echo e(\App\Models\Setting::get('store_phone', 'No Phone Set')); ?>
+
         </p>
         <div class="receipt-divider"></div>
         <div class="receipt-small">
          <div class="receipt-row">
-             <span>{{ $order->created_at->format('Y-m-d') }}</span> 
-             <span>{{ $order->created_at->format('h:i A') }}</span>
+             <span><?php echo e($order->created_at->format('Y-m-d')); ?></span> 
+             <span><?php echo e($order->created_at->format('h:i A')); ?></span>
          </div>
-         <p class="m-0 mt-1">Receipt #: {{ $order->order_number }}<br>Cashier: {{ $order->user->name ?? 'System' }}</p>
-         @if($order->customer)
-             <p class="m-0 mt-1">Customer: {{ $order->customer->name }}</p>
-         @endif
+         <p class="m-0 mt-1">Receipt #: <?php echo e($order->order_number); ?><br>Cashier: <?php echo e($order->user->name ?? 'System'); ?></p>
+         <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($order->customer): ?>
+             <p class="m-0 mt-1">Customer: <?php echo e($order->customer->name); ?></p>
+         <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         </div>
         <div class="receipt-divider"></div>
         <div class="receipt-small space-y-1">
@@ -454,69 +455,72 @@
                 <div class="w-[35%] text-right">Total</div>
             </div>
             
-            @foreach($order->items as $item)
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = $order->items; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoopIteration(); ?><?php endif; ?>
              <div class="flex leading-tight" style="margin-bottom: 4px;">
                 <div class="w-[50%] pr-1 font-semibold" style="word-break: break-word;">
-                    {{ $item->custom_name ?: ($item->product ? $item->product->name : 'Deleted Product') }}
-                    @if($item->quantity > 1)
-                        <div class="text-[7.5px] text-gray-500 font-normal mt-0.5">{{ number_format($item->unit_price, 2) }} each</div>
-                    @endif
+                    <?php echo e($item->custom_name ?: ($item->product ? $item->product->name : 'Deleted Product')); ?>
+
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($item->quantity > 1): ?>
+                        <div class="text-[7.5px] text-gray-500 font-normal mt-0.5"><?php echo e(number_format($item->unit_price, 2)); ?> each</div>
+                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </div>
                 <div class="w-[15%] text-center font-medium">
-                    {{ $item->quantity }}
-                    @if($item->product && !in_array(strtolower($item->product->unit), ['pice', 'box', 'packet', 'bottle', 'pkt']))
-                        <span style="font-size:7.5px;">{{ $item->product->unit }}</span>
-                    @endif
+                    <?php echo e($item->quantity); ?>
+
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($item->product && !in_array(strtolower($item->product->unit), ['pice', 'box', 'packet', 'bottle', 'pkt'])): ?>
+                        <span style="font-size:7.5px;"><?php echo e($item->product->unit); ?></span>
+                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </div>
-                <div class="w-[35%] text-right font-bold">{{ number_format($item->subtotal, 2) }}</div>
+                <div class="w-[35%] text-right font-bold"><?php echo e(number_format($item->subtotal, 2)); ?></div>
              </div>
-            @endforeach
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
         </div>
         <div class="receipt-divider"></div>
         <div class="receipt-small space-y-1">
             <div class="flex justify-between">
                 <span>Subtotal</span>
-                <span>{{ number_format($order->subtotal, 2) }}</span>
+                <span><?php echo e(number_format($order->subtotal, 2)); ?></span>
             </div>
-            @if($order->discount > 0)
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($order->discount > 0): ?>
             <div class="flex justify-between">
                 <span>Discount</span>
-                <span>-{{ number_format($order->discount, 2) }}</span>
+                <span>-<?php echo e(number_format($order->discount, 2)); ?></span>
             </div>
-            @endif
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             <div class="flex justify-between">
-                <span>Tax ({{ $order->tax_rate ?: \App\Models\Setting::get('tax_rate', 5) }}%)</span>
-                <span>{{ number_format($order->tax, 2) }}</span>
+                <span>Tax (<?php echo e($order->tax_rate ?: \App\Models\Setting::get('tax_rate', 5)); ?>%)</span>
+                <span><?php echo e(number_format($order->tax, 2)); ?></span>
             </div>
         </div>
         <div class="receipt-divider" style="margin: 0.35rem 0;"></div>
         <div class="receipt-row receipt-total">
             <span>TOTAL</span> 
-            <span>{{ $currency }} {{ number_format($order->total, 2) }}</span>
+            <span><?php echo e($currency); ?> <?php echo e(number_format($order->total, 2)); ?></span>
         </div>
         <div class="receipt-divider" style="margin: 0.35rem 0;"></div>
         
         <div class="receipt-small mt-2 mb-0 space-y-1">
             <div class="flex justify-between uppercase">
                 <span>Payment</span>
-                <span>{{ $order->payment_method }}</span>
+                <span><?php echo e($order->payment_method); ?></span>
             </div>
-            @if($order->payment_method === 'cash' && $order->amount_tendered)
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($order->payment_method === 'cash' && $order->amount_tendered): ?>
             <div class="flex justify-between">
                 <span>Tendered</span>
-                <span>{{ number_format($order->amount_tendered, 2) }}</span>
+                <span><?php echo e(number_format($order->amount_tendered, 2)); ?></span>
             </div>
             <div class="flex justify-between font-bold">
                 <span>Change</span>
-                <span>{{ number_format($order->change, 2) }}</span>
+                <span><?php echo e(number_format($order->change, 2)); ?></span>
             </div>
-            @endif
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         </div>
         
         <div class="receipt-divider"></div>
         <div class="text-center mt-3">
             <div class="font-bold text-xs tracking-wide">
-                {{ \App\Models\Setting::get('receipt_footer', 'THANK YOU!') }}
+                <?php echo e(\App\Models\Setting::get('receipt_footer', 'THANK YOU!')); ?>
+
             </div>
             <div class="text-[8px] text-neutral-500 mt-1">
                 Please keep this receipt for your records
@@ -567,3 +571,4 @@
   </script>
  </body>
 </html>
+<?php /**PATH C:\Users\kanes\OneDrive\Documents\pos\resources\views/receipt.blade.php ENDPATH**/ ?>

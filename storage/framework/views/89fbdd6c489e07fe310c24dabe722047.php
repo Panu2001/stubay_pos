@@ -40,7 +40,7 @@ unset($__defined_vars, $__key, $__value); ?>
 <?php $component->withAttributes(['field' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($field),'inline-label-vertical-alignment' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($inlineLabelVerticalAlignment)]); ?>
 <?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::processComponentKey($component); ?>
 
- <?php $__env->slot('labelPrefix', null, []); ?> <?php echo e($labelPrefix); ?> <?php $__env->endSlot(); ?>
+
 <?php echo e($slot ?? ""); ?>
 
  <?php echo $__env->renderComponent(); ?>
@@ -52,4 +52,4 @@ unset($__defined_vars, $__key, $__value); ?>
 <?php if (isset($__componentOriginala86dcd7e3fb4428c61bb5e13aa161d28)): ?>
 <?php $component = $__componentOriginala86dcd7e3fb4428c61bb5e13aa161d28; ?>
 <?php unset($__componentOriginala86dcd7e3fb4428c61bb5e13aa161d28); ?>
-<?php endif; ?><?php /**PATH C:\Users\kanes\OneDrive\Documents\pos\storage\framework\views/9b0aa906eb507785d5e713f2ff316d37.blade.php ENDPATH**/ ?>
+<?php endif; ?><?php /**PATH C:\Users\kanes\OneDrive\Documents\pos\storage\framework\views/7efa8d8730e6e64b895c482f47ff6151.blade.php ENDPATH**/ ?>

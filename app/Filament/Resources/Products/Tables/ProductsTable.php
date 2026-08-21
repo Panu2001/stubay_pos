@@ -72,7 +72,19 @@ class ProductsTable
                     ->sortable(),
                 TextColumn::make('expiry_date')
                     ->date()
-                    ->description(fn (\App\Models\Product $record): string => $record->expiry_date && \Carbon\Carbon::parse($record->expiry_date) <= now()->addDays(30) ? 'Expires ' . \Carbon\Carbon::parse($record->expiry_date)->diffForHumans(['parts' => 2]) : '')
+                    ->badge()
+                    ->color(fn (\App\Models\Product $record): string => match(true) {
+                        !$record->expiry_date => 'gray',
+                        \Carbon\Carbon::parse($record->expiry_date)->isPast() => 'danger',
+                        \Carbon\Carbon::parse($record->expiry_date)->lte(now()->addDays(30)) => 'warning',
+                        default => 'success',
+                    })
+                    ->description(fn (\App\Models\Product $record): string => match(true) {
+                        !$record->expiry_date => '',
+                        \Carbon\Carbon::parse($record->expiry_date)->isPast() => 'Expired ' . \Carbon\Carbon::parse($record->expiry_date)->diffForHumans(['parts' => 1]),
+                        \Carbon\Carbon::parse($record->expiry_date)->lte(now()->addDays(30)) => 'Expires ' . \Carbon\Carbon::parse($record->expiry_date)->diffForHumans(['parts' => 1, 'syntax' => \Carbon\CarbonInterface::DIFF_ABSOLUTE]),
+                        default => '',
+                    })
                     ->sortable(),
                 TextColumn::make('created_at')
                     ->dateTime()
@@ -82,12 +94,33 @@ class ProductsTable
                     ->sortable(),
             ])
             ->filters([
+                \Filament\Tables\Filters\Filter::make('expired')
+                    ->label('Already Expired')
+                    ->query(fn (\Illuminate\Database\Eloquent\Builder $query): \Illuminate\Database\Eloquent\Builder => $query
+                        ->where(fn ($q) => $q
+                            ->whereNotNull('expiry_date')
+                            ->where('expiry_date', '<', now()->toDateString())
+                            ->orWhereHas('activeStockBatches', fn ($b) => $b
+                                ->whereNotNull('expiry_date')
+                                ->where('expiry_date', '<', now()->toDateString())
+                            )
+                        )
+                    ),
+                \Filament\Tables\Filters\Filter::make('expiring_soon')
+                    ->label('Expiring Soon (30 Days)')
+                    ->query(fn (\Illuminate\Database\Eloquent\Builder $query): \Illuminate\Database\Eloquent\Builder => $query
+                        ->where(fn ($q) => $q
+                            ->whereNotNull('expiry_date')
+                            ->whereBetween('expiry_date', [now()->toDateString(), now()->addDays(30)->toDateString()])
+                            ->orWhereHas('activeStockBatches', fn ($b) => $b
+                                ->whereNotNull('expiry_date')
+                                ->whereBetween('expiry_date', [now()->toDateString(), now()->addDays(30)->toDateString()])
+                            )
+                        )
+                    ),
                 \Filament\Tables\Filters\Filter::make('low_stock')
                     ->label('Low Stock')
                     ->query(fn (\Illuminate\Database\Eloquent\Builder $query): \Illuminate\Database\Eloquent\Builder => $query->whereColumn('stock_quantity', '<=', 'low_stock_notification')),
-                \Filament\Tables\Filters\Filter::make('expiring_soon')
-                    ->label('Expiring Soon')
-                    ->query(fn (\Illuminate\Database\Eloquent\Builder $query): \Illuminate\Database\Eloquent\Builder => $query->whereNotNull('expiry_date')->where('expiry_date', '<=', now()->addDays(30))),
             ], layout: FiltersLayout::Dropdown)
             ->recordActions([
                 \Filament\Actions\Action::make('print')
